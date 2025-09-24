@@ -4,15 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReciclaApp - Página Principal</title>
+    
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #2c3e50, #3498db); /* Degradado elegante */
+            color: #fff;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo con opacidad */
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* Contenedor de los botones */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espacio entre los botones */
+            margin-top: 30px;
+        }
+
+        /* Estilo de los botones */
+        .button {
+            background-color: #ff9800;
+            color: white;
+            padding: 18px 35px;
+            text-decoration: none;
+            font-size: 1.3em;
+            border-radius: 25px;
+            transition: transform 0.3s, background-color 0.3s;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #ff5722;
+            transform: scale(1.1);
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        /* Imagen de fondo */
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('ruta/a/tu/imagen.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
+    <!-- Imagen de fondo borroso -->
+    <div class="background-image"></div>
 
-    <h1>Bienvenido a ReciclaApp</h1>
-    <p>Haz clic en el siguiente botón para aprender más sobre HTML:</p>
+    <header>
+        <h1>Bienvenido a ReciclaApp</h1>
+        <p>Haz clic en el siguiente botón para aprender más sobre HTML:</p>
 
-    <!-- Enlace que abre aprende.html -->
-    <a href="{% url 'aprende' %}"><button>Ir a Aprende HTML</button></a>
-    
+        <!-- Contenedor de los botones -->
+        <div class="button-container">
+            <!-- Botón de Google Login -->
+            <a href="http://127.0.0.1:8000/accounts/google/login/callback/" class="button">Loguéate!!</a>
+
+            <!-- Botón "Saber más" -->
+            <a href="{% url 'aprende' %}" class="button">Saber más</a>
+        </div>
+    </header>
 
 </body>
 </html>
