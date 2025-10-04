@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',  # Para habilitar Google Sign-In
 ]
 
-# Configuración de middleware
+# Configuración de middleware sirve para autentificacion y desautorizar funciones dentro del programa
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,14 +100,36 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Redirección después del login
-LOGIN_REDIRECT_URL = '/'  # Redirige al inicio después del login
+LOGIN_REDIRECT_URL = '/hub/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True        # si quieres login solo por email
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # 'username' | 'email' | 'username_email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "proyectoinicialgrupo15@gmail.com"
+EMAIL_HOST_PASSWORD = "gndt kdoe wahv bxkw"
+
+
+
+
+
+
 
 # Agregar configuración de sitios
 SITE_ID = 1  # Asegúrate de que el Site con ID 1 esté configurado en la base de datos
 
 # Autenticación y Backend
 AUTHENTICATION_BACKENDS = (
-    'allauth.account.auth_backends.AuthenticationBackend',  # django-allauth backend
-    'django.contrib.auth.backends.ModelBackend',  # Django default backend
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
- 
+TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, 'templates')]
