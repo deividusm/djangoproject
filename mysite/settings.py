@@ -19,7 +19,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',  # Para habilitar Google Sign-In
+    'allauth.socialaccount.providers.google'
+    'rest_framework_simplejwt'
+    'rest_framework',  # Para habilitar Google Sign-In
 ]
 
 # Configuración de middleware sirve para autentificacion y desautorizar funciones dentro del programa
@@ -38,7 +40,12 @@ MIDDLEWARE = [
 
 # URLs y plantillas
 ROOT_URLCONF = 'mysite.urls'
-
+#autenticador que permite token para mantener sesion.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
