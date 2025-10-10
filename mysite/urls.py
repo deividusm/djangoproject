@@ -1,7 +1,15 @@
-from django.urls import path
-from mysite.views import aprende, recicla  # Asegúrate de que las vistas sean correctas
+from django.urls import path, include
+from django.shortcuts import redirect
+from mysite.views import hub
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
-    path('', recicla, name='recicla'),
-    path('aprende/', aprende, name='aprende'),
+    path('', lambda r: redirect('account_login'), name='home'),  # raíz → login
+    path('hub/', hub, name='hub'),                                # menú real
+    path('accounts/', include('allauth.urls')),                   # allauth
 ]
+
+#urls.py
