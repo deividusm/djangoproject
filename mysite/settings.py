@@ -19,8 +19,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google'
-    'rest_framework_simplejwt'
+    'allauth.socialaccount.providers.google',
+    'rest_framework_simplejwt',
     'rest_framework',  # Para habilitar Google Sign-In
 ]
 
