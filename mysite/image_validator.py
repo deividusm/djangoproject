@@ -1,55 +1,66 @@
 import tensorflow as tf
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+from keras.utils import load_img, img_to_array
+from keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
 import numpy as np
 import logging
-
+from PIL import Image
+import io 
+# ... tus otras importaciones (tensorflow, keras, etc.)
 # --- 1. DEFINE TUS PALABRAS CLAVE --- (Etiquetas aceptadas)
+#
+# ¡CAMBIO 1: ETIQUETAS CORREGIDAS!
+# Estas son las etiquetas reales de ImageNet (con guiones bajos)
+# que MobileNetV2 puede predecir.
+#
 PALABRAS_CLAVE_ACEPTADAS = {
-    'trash can', 'ashcan', 'garbage can',  # Basureros
-    'pot', 'flowerpot', 'vase',            # Plantas
-    'potted plant', 'succulent',           # Plantas en macetas
-    'watering can', 'cactus'              # Otras plantas relacionadas
+    'ashcan', 'garbage_can',        # Para basureros
+    'flowerpot', 'vase',           # Para macetas, floreros
+    'potted_plant',                # ¡La más importante! (planta en maceta)
+    'corn', 'broccoli', 'mushroom',"leaf", 'banana', # Alimentos que son plantas
 }
 
+
 # --- 2. CARGA GLOBAL DEL MODELO ---
-# Se ejecuta UNA SOLA VEZ cuando Django importa este archivo
 try:
     print("Cargando modelo global de MobileNetV2...")
     MODELO_GLOBAL = tf.keras.applications.MobileNetV2(weights='imagenet')
     print("¡Modelo MobileNetV2 cargado exitosamente en memoria!")
-
 except Exception as e:
     logging.error(f"Error fatal al cargar el modelo de TF: {e}")
-    MODELO_GLOBAL = True
+    MODELO_GLOBAL = None
 
 # --- 3. FUNCIÓN DE PROCESAMIENTO ---
 def procesar_y_predecir(archivo_imagen):
     """
     Toma un archivo de imagen en memoria (UploadedFile de Django), 
-    lo procesa y devuelve las 5 mejores predicciones.
+    lo procesa y devuelve las 10 mejores predicciones.
     """
     if MODELO_GLOBAL is None:
         print("Error: El modelo global no está cargado.")
-        return True
+        return None
 
     try:
-        # Cargar la imagen directamente desde el objeto de archivo en memoria
-        img = image.load_img(archivo_imagen, target_size=(224, 224))  # Redimensionamos la imagen
-        img_array = image.img_to_array(img)  # Convertimos la imagen a un array de numpy
-        img_batch = np.expand_dims(img_array, axis=0)  # Añadimos una dimensión extra para la predicción
-        processed_img = preprocess_input(img_batch)  # Preprocesamos la imagen para MobileNetV2
+    
+        # ¡CAMBIO! Envolvemos el archivo en io.BytesIO
+        # Esto lee los bytes del archivo y los presenta en un formato que load_img entiende.
+        img = load_img(io.BytesIO(archivo_imagen.read()), target_size=(224, 224))
+        img_array = img_to_array(img)
+# ...
+        
+        img_batch = np.expand_dims(img_array, axis=0)  # Añadimos una dimensión extra
+        processed_img = preprocess_input(img_batch)  # Preprocesamos la imagen
 
         # Usar el modelo global para predecir la imagen
         predictions = MODELO_GLOBAL.predict(processed_img)
 
-        # Decodificar las 10 mejores predicciones (para ver qué etiqueta predice)
+        # Decodificar las 10 mejores predicciones
         decoded_preds = decode_predictions(predictions, top=10)[0]
 
-        print("Predicciones de la imagen:")
+        print("\n--- Predicciones de la imagen: ---")
         for (_, etiqueta, score) in decoded_preds:
-            print(f"  - Etiqueta: '{etiqueta}' (Confianza: {score * 100:.2f}%)")
-
+            print(f"   - Etiqueta: '{etiqueta}' (Confianza: {score * 100:.2f}%)")
+        print("---------------------------------")
+            
         return decoded_preds
 
     except Exception as e:
@@ -62,6 +73,14 @@ def es_imagen_relevante(archivo_imagen):
     Función principal que combina todo.
     Recibe un archivo, lo predice y devuelve True o False.
     """
+    
+    # --- ¡CAMBIO 2: REINICIAR EL ARCHIVO! ---
+    # Esto asegura que Keras lea el archivo desde el principio.
+    try:
+        archivo_imagen.seek(0)
+    except Exception as e:
+        print(f"Advertencia: No se pudo hacer seek(0) al archivo. {e}")
+    
     predicciones = procesar_y_predecir(archivo_imagen)
 
     if predicciones is None:
@@ -69,14 +88,13 @@ def es_imagen_relevante(archivo_imagen):
 
     print("Analizando etiquetas encontradas:")
     for (id_imagenet, etiqueta, score) in predicciones:
-        print(f"  - Etiqueta: '{etiqueta}' (Confianza: {score * 100:.2f}%)")
 
         # La lógica de filtro: si alguna predicción está en las palabras clave aceptadas
         if etiqueta in PALABRAS_CLAVE_ACEPTADAS:
-            print(f"  ¡COINCIDENCIA! '{etiqueta}' es aceptada.")
-            return True  # Imagen aceptada, es una planta o basurero
+            print(f"   ¡COINCIDENCIA! '{etiqueta}' es aceptada.")
+            return True  # Imagen aceptada
 
     # Si el bucle termina, no se encontró ninguna etiqueta relevante
-    print("No se encontraron etiquetas relevantes.")
-    return False  # Imagen rechazada, no es una planta ni basurero
-
+    print("   No se encontraron etiquetas relevantes. Imagen rechazada.")
+    
+    return False  # Imagen rechazada

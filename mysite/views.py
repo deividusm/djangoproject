@@ -35,7 +35,37 @@ class SubirImagenView(View):
         if es_valida:
             resultado = "¡IMAGEN ACEPTADA! ✅ Es una planta o basurero."
         else:
-            resultado = "IMAGEN RECHAZADA ❌. Sube solo plantas o basureros."
+            resultado = "!Imagen rechazada"
         
         # Se pasa el resultado al template para mostrarlo
         return render(request, 'verificar_mobilenet.html', {'resultado': resultado})
+
+
+
+
+#cosa nueva
+@login_required(login_url='account_login')
+def hub(request):
+    # Aquí buscarías en tu base de datos...
+    # (Por ahora, usamos datos de ejemplo)
+    
+    # Datos que irán al JavaScript
+    contexto_js = {
+        'me': {
+            'name': request.user.username,
+            'points': 150  # Deberías sacar esto de la base de datos
+        },
+        'photos': [
+            # Deberías sacar esto de la base de datos
+            {'data': '/media/fotos/mi_foto.jpg', 'catLabel': 'Plásticos', 'desc': 'Botellas de la semana'},
+        ],
+        'players': [
+            # Deberías sacar esto de la base de datos
+            {'name': 'VerdeFuerte', 'points': 220},
+            {'name': 'EcoNinja', 'points': 190},
+        ]
+    }
+    
+    return render(request, 'hub.html', {
+        'contexto_js': contexto_js  # Pasamos los datos al template
+    })
