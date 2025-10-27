@@ -120,20 +120,23 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo">♻️</div>
+        <div class="logo">♻️</div> #colocar imagen bakana
         <div>
           <b>ReciclaQuest</b><br>
           <small style="color:var(--muted)">Juega · Registra · Sube de ranking</small>
         </div>
       </div>
       <nav class="nav" aria-label="Navegación principal">
-        <a href="#jugar">Jugar</a>
         <a href="#como">Cómo jugar</a>
         <a href="#subir">Subir acción</a>
-        <a href="#ranking">Ranking</a>
+        <section id="ranking">
+         <h2>Ranking</h2>
+         <p class="muted">Mira el ranking completo y filtra por nombre.</p>
+         <a class="btn" href="ranking.html">Ver ranking completo</a>
+        </section>
         <a href="#ideas">Ideas</a>
         <a href="#reglas">Reglas</a>
-        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">Verificar IA (Demo)</a>
+        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">Juguemos</a>
       </nav>
     </div>
   </div>
@@ -221,27 +224,6 @@
         <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
           <button class="btn ghost" id="clearPhotos">Limpiar fotos</button>
           <button class="btn ghost" id="clearAll">Reiniciar todo</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- RANKING -->
-    <section id="ranking">
-      <h2>Ranking</h2>
-      <div class="ranking">
-        <div class="card">
-          <table>
-            <thead><tr><th>#</th><th>Jugador</th><th>Puntos</th></tr></thead>
-            <tbody id="rankBody"></tbody>
-          </table>
-        </div>
-        <div class="card">
-          <h3 style="margin-top:0">Tips para subir de puesto</h3>
-          <div class="list">
-            <div class="row"><i></i><div>Enjuaga envases: basta un enjuague rápido.</div></div>
-            <div class="row"><i></i><div>Comprime botellas y cajas para ahorrar espacio.</div></div>
-            <div class="row"><i></i><div>Separa correcto: vidrio sin tapas ni etiquetas.</div></div>
-          </div>
         </div>
       </div>
     </section>

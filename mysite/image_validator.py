@@ -15,7 +15,7 @@ import io
 PALABRAS_CLAVE_ACEPTADAS = {
     'ashcan', 'garbage_can',        # Para basureros
     'flowerpot', 'vase',           # Para macetas, floreros
-    'potted_plant',                # ¡La más importante! (planta en maceta)
+    'potted_plant',                # La más importante (planta en maceta)
     'corn', 'broccoli', 'mushroom',"leaf", 'banana', # Alimentos que son plantas
 }
 
