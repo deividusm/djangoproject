@@ -7,13 +7,6 @@ from .image_validator import es_imagen_relevante  # Importa la función de valid
 # Vista para el Hub (requiere estar logueado)
 
 
-
-
-
-
-
-
-
 @login_required(login_url='account_login')
 def hub(request):
     return render(request, 'hub.html', {
@@ -23,6 +16,10 @@ def hub(request):
 @login_required(login_url='account_login')
 def ranking(request):
     return render(request, 'ranking.html') 
+
+@login_required(login_url='account_login')
+def comojugar(request):
+    return render(request, 'comojugar.html') 
 # Vista para mostrar el formulario de verificación de imagen
 class VerificarMobileNetView(View):
     def get(self, request):
