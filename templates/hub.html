@@ -130,13 +130,12 @@
           </div>
       </div>
        <nav class="nav" aria-label="Navegación principal">
-        <a href="#jugar">Jugar</a>
         <a href="#como">Cómo jugar</a>
         <a href="#subir">Subir acción</a>
         <a href="/ranking/">Ranking</a>
         <a href="#ideas">Ideas</a>
         <a href="#reglas">Reglas</a>
-        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">Verificar IA (Demo)</a>
+        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">JUGAR!</a>
       </nav>
     </div>
   </div>
@@ -149,9 +148,6 @@
       <div class="chips" style="margin:10px 0 14px">
         <span class="chip">Puntos & Ranking</span>
         <span class="chip">Lista de tareas</span>
-      </div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap">
-        <button class="btn" id="playBtn">Jugar ahora</button>
       </div>
     </div>
 
@@ -188,45 +184,12 @@
     <section id="como">
       <h2>Cómo jugar</h2>
       <div class="grid3">
-        <div class="tile"><strong>1) Elige una acción</strong><small>Ej: reciclar vidrio, papel o plásticos; o llevar orgánicos al compost.</small></div>
+        <div class="tile"><strong>1) Elige una acción</strong><small>Ej: reciclar vidrio, papel o plásticos; o hacer alguna buena accion.</small></div>
         <div class="tile"><strong>2) Regístrala con foto</strong><small>Sube una imagen clara y escribe una breve descripción.</small></div>
         <div class="tile"><strong>3) Gana puntos</strong><small>Según la categoría sumas puntos y escalas en el ranking.</small></div>
       </div>
     </section>
 
-    <!-- SUBIR ACCIÓN (con fotos) -->
-    <section id="subir">
-      <h2>Subir acción</h2>
-      <div class="uploader">
-        <div class="drop" id="drop">
-          <div>
-            <p><b>Arrastra tus fotos aquí</b> o <label style="text-decoration:underline; cursor:pointer"><input type="file" id="fileInput" accept="image/*" multiple hidden>haz clic para elegir</label></p>
-            <small class="muted">Formatos: JPG/PNG • Se guardan de forma local (demo).</small>
-          </div>
-        </div>
-        <div class="form">
-          <label>Categoría de acción</label>
-          <select id="category">
-            <option value="organicos">Orgánicos (compost)</option>
-            <option value="papel">Papel/Cartón</option>
-            <option value="plastico">Plásticos</option>
-            <option value="vidrio">Vidrio</option>
-          </select>
-          <label>Descripción</label>
-          <textarea id="desc" placeholder="Ej: Dejé 3 botellas de vidrio en el punto limpio del barrio."></textarea>
-          <button class="btn" id="submitAction">Registrar acción</button>
-          <small class="muted">Pronto: cálculo <b>CO₂ evitado</b> por acción.</small>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <h3 style="margin:0 0 8px">Mis evidencias</h3>
-        <div class="gallery" id="gallery"></div>
-        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
-          <button class="btn ghost" id="clearPhotos">Limpiar fotos</button>
-          <button class="btn ghost" id="clearAll">Reiniciar todo</button>
-        </div>
-      </div>
-    </section>
 
     <!-- IDEAS -->
     <section id="ideas">
@@ -246,7 +209,7 @@
           <strong>Reglas básicas</strong>
           <div class="list" style="margin-top:6px">
             <div class="row"><i></i><div>Sube solo evidencias propias y recientes.</div></div>
-            <div class="row"><i></i><div>Describe la acción de forma clara y honesta.</div></div>
+            <div class="row"><i></i><div>Describe la acción de forma clara y honesta sino habra sanciones.</div></div>
             <div class="row"><i></i><div>Un punto limpio ≠ basurero: mantén limpio el lugar.</div></div>
           </div>
         </div>
@@ -256,7 +219,6 @@
         </div>
         <div class="tile">
           <strong>Puntos de reciclaje (próximo)</strong>
-          <small>Mapa con sitios cercanos para dejar vidrio, papel, plásticos u orgánicos.</small>
         </div>
       </div>
     </section>
@@ -267,12 +229,6 @@
     <div class="panel">
       <h3>Elige un modo</h3>
       <p style="color:var(--muted);margin:0">Puedes cambiarlo más tarde.</p>
-      <div class="grid">
-        <button class="btn">Historia</button>
-        <button class="btn">Arcade</button>
-        <button class="btn ghost">Cooperativo</button>
-        <button class="btn ghost">Libre</button>
-      </div>
       <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px">
         <button class="btn ghost" id="closeModal">Cerrar</button>
       </div>

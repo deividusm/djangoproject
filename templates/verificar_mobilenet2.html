@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ReciclaQuest — Hub</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#faf9f7; --panel:#ffffff; --panel-2:#fbfaf8; --ink:#1a1a1a; --muted:#6f6f6f;
+      --line:#e7e4df; --green:#22c55e; --green-2:#16a34a; --radius:14px;
+      --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Manrope,system-ui,Segoe UI,Roboto; color:var(--ink); background: var(--bg);}
+
+    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(250,249,247,.9); border-bottom:1px solid var(--line); }
+    .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto;}
+    .brand{ display:flex; align-items:center; gap:12px; }
+    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background:#fff; }
+    .brand b{ letter-spacing:.02em; font-size:18px }
+    .nav{ margin-left:auto; display:flex; flex-wrap:wrap; gap:8px }
+    .nav a{ text-decoration:none; color:var(--ink); padding:10px 12px; border-radius:12px; border:1px solid var(--line); background:#fff; }
+    .nav a:hover{ background:#f6f5f3 }
+
+    .btn{ cursor:pointer; border-radius:12px; padding:10px 14px; border:1px solid #dbe9df; background:linear-gradient(180deg, var(--green), var(--green-2)); color:#07110a; font-weight:800; letter-spacing:.02em; box-shadow: 0 8px 18px rgba(34,197,94,.20), inset 0 1px 0 rgba(255,255,255,.2); }
+    .btn.ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .btn:hover{ transform:translateY(-1px) }
+
+    .hero{ max-width:1200px; margin:0 auto; padding:28px clamp(16px, 4vw, 32px); display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center;}
+    .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
+    h1.title{ font-family:Orbitron,Manrope; font-size:clamp(26px,5vw,48px); margin:6px 0 12px; }
+    .muted{ color:var(--muted) }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px }
+    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#3a3a3a; font-size:12px; cursor:pointer; }
+    .chip.active{ outline:2px solid rgba(34,197,94,.35); background:#f3fbf6; }
+
+    .wrap{ max-width:1200px; margin:0 auto; padding:0 clamp(16px, 4vw, 32px) 60px; }
+    section{ margin:16px 0 26px }
+    section h2{ font-family:Orbitron,Manrope; margin:0 0 10px; letter-spacing:.02em }
+
+    /* Subir acción */
+    .uploader{ display:grid; grid-template-columns: 1fr 1fr; gap:14px }
+    .drop{
+      position: relative; width: 100%; height: 260px; /* alto fijo: no deforma */
+      border:2px dashed #dbe3dc; border-radius:16px; background:#f6f5f3;
+      color:#2a2a2a; text-align:center; padding:14px; overflow:hidden;
+      display:grid; place-items:center;
+    }
+    .drop.drag{ outline:2px solid rgba(34,197,94,.25); background:#eef6f0 }
+    .drop-text{ position:absolute; inset:16px; display:grid; place-items:center; pointer-events:none }
+    #preview{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:none; pointer-events:none }
+
+    .form{ display:grid; gap:10px }
+    .input, select, textarea{ background:#fff; border:1px solid var(--line); color:var(--ink); border-radius:12px; padding:10px 12px; width:100% }
+    textarea{ min-height:90px; resize:vertical }
+
+    .gallery{ display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:10px }
+    .ph{ position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#fff }
+    .ph img{ display:block; width:100%; height:120px; object-fit:cover }
+    .ph .meta{ position:absolute; inset:auto 6px 6px 6px; background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.9)); padding:6px 8px; border-radius:10px; font-size:12px }
+    .ph button{ position:absolute; top:6px; right:6px; }
+
+    @media (max-width:1080px){ .hero{ grid-template-columns:1fr } .uploader{grid-template-columns:1fr} .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:620px){ .gallery{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">
+          <img src="{% static 'img/logo_greencycle.png' %}" alt="GreenCycle" style="width:42px; height:42px; border-radius:10px;">
+        </div>
+        <div>
+          <b>GreenCycle</b><br>
+          <small style="color:var(--muted)">Juega · Recicla · Sube de ranking</small>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#como">Cómo jugar</a>
+        <a href="#subir">Subir acción</a>
+        <a href="/ranking/">Ranking</a>
+        <a href="#ideas">Ideas</a>
+        <a href="#reglas">Reglas</a>
+        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">JUGAR!</a>
+      </nav>
+    </div>
+  </div>
+
+  <header class="hero" id="jugar">
+    <div class="card">
+      <h1 class="title">¡Gana puntos <span style="color:var(--green)">reciclando</span>!</h1>
+      <p class="muted">Registra tus acciones, sube fotos y escala en el ranking. Más adelante, integraremos CO₂ evitado y puntos de reciclaje cercanos.</p>
+      <div class="chips" style="margin:10px 0 14px">
+        <span class="chip">Puntos & Ranking</span>
+        <span class="chip">Lista de tareas</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="margin-top:0">Mi progreso</h2>
+      <small class="muted">Demo local (se guarda en tu navegador).</small>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="subir">
+      <h2>Subir acción</h2>
+      <div class="uploader">
+        <!-- Dropzone -->
+        <div class="drop" id="drop">
+          <div class="drop-text" id="dropText">
+            <p><b>Arrastra tus fotos aquí</b> o
+              <label style="text-decoration:underline; cursor:pointer">
+                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                haz clic para elegir
+              </label>
+            </p>
+            <small class="muted">Formatos: JPG/PNG</small>
+          </div>
+          <img id="preview" alt="Vista previa">
+        </div>
+
+        <!-- Formulario -->
+        <div class="form">
+          <label>Categoría de acción</label>
+          <select id="category" class="input">
+            <option value="organicos">Orgánicos (compost)</option>
+            <option value="papel">Papel/Cartón</option>
+            <option value="plastico">Plásticos</option>
+            <option value="vidrio">Vidrio</option>
+          </select>
+
+          <label>Tipo de lugar (para filtrar)</label>
+          <select id="tipoLugar" class="input">
+            <option value="basurero">Basurero</option>
+            <option value="planta">Planta</option>
+          </select>
+
+          <label>Descripción</label>
+          <textarea id="desc" class="input" placeholder="Ej: Dejé 3 botellas de vidrio en el punto limpio del barrio."></textarea>
+
+          <button class="btn" id="submitAction">Registrar acción</button>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <h3 style="margin:0 0 10px">Mis evidencias</h3>
+        <div class="chips" id="filterChips" style="margin-bottom:10px">
+          <span class="chip active" data-filter="todas">Todas</span>
+          <span class="chip" data-filter="basurero">Basurero</span>
+          <span class="chip" data-filter="planta">Planta</span>
+        </div>
+        <div class="gallery" id="gallery"></div>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
+          <button class="btn ghost" id="clearPhotos">Limpiar fotos</button>
+          <button class="btn ghost" id="clearAll">Reiniciar todo</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="como">
+      <h2>Cómo jugar</h2>
+      <div class="chips">
+        <span class="chip">Elige una acción</span>
+        <span class="chip">Regístrala con foto</span>
+        <span class="chip">Gana puntos</span>
+      </div>
+    </section>
+
+    <section id="ideas">
+      <h2>Ideas</h2>
+      <div class="chips">
+        <span class="chip">Misiones semanales</span>
+        <span class="chip">Rachas</span>
+        <span class="chip">Cooperativo</span>
+      </div>
+    </section>
+
+    <section id="reglas">
+      <h2>Reglas</h2>
+      <div class="chips">
+        <span class="chip">Evidencias propias y recientes</span>
+        <span class="chip">Describe con claridad</span>
+        <span class="chip">Mantén limpio el lugar</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Evita que el navegador abra la imagen fuera del drop
+    ['dragover','drop'].forEach(evt => window.addEventListener(evt, e => e.preventDefault()));
+
+    // --- Estado local demo
+    const KEY = 'reciclaquest-hub-v1';
+    const state = JSON.parse(localStorage.getItem(KEY) || '{"photos":[]}');
+    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+    // --- Refs
+    const drop = document.getElementById('drop');
+    const dropText = document.getElementById('dropText');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const gallery = document.getElementById('gallery');
+    const category = document.getElementById('category');
+    const tipoLugar = document.getElementById('tipoLugar');
+    const desc = document.getElementById('desc');
+    const submitAction = document.getElementById('submitAction');
+    const filterChips = document.getElementById('filterChips');
+
+    let pendingFiles = [];          // dataURL list
+    let currentFilter = 'todas';    // filtro galería
+
+    // --- Dropzone UX
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
+    drop.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+    function handleFiles(fileList){
+      const file = [...fileList].find(f => f.type.startsWith('image/'));
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const dataURL = ev.target.result;
+        pendingFiles = [dataURL];
+        showPreview(dataURL);
+      };
+      reader.readAsDataURL(file);
+    }
+    function showPreview(dataURL){
+      preview.src = dataURL;
+      preview.style.display = 'block';
+      dropText.style.opacity = 0;
+    }
+    function clearPreview(){
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+      dropText.style.opacity = 1;
+    }
+
+    // --- Guardar acción
+    function pointsFor(cat){
+      switch(cat){ case 'organicos': return 10; case 'papel': return 12; case 'plastico': return 14; case 'vidrio': return 16; default: return 5; }
+    }
+
+    submitAction.addEventListener('click', ()=>{
+      if(pendingFiles.length===0){ alert('Agrega al menos una foto.'); return; }
+      const cat = category.value;
+      const catLabel = {organicos:'Orgánicos', papel:'Papel/Cartón', plastico:'Plásticos', vidrio:'Vidrio'}[cat] || 'Acción';
+      const d = (desc.value||'').trim();
+      const tipo = tipoLugar.value; // basurero | planta
+
+      // guarda una tarjeta por archivo pendiente (aquí 1)
+      pendingFiles.forEach(data => state.photos.push({ data, cat, catLabel, desc:d, tipo, pts:pointsFor(cat), ts:Date.now() }));
+      save();
+
+      pendingFiles = [];
+      desc.value = '';
+      clearPreview();
+      renderGallery();
+      alert('¡Acción registrada! Puntos sumados.');
+    });
+
+    // --- Filtros de galería
+    filterChips.addEventListener('click', (e)=>{
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      currentFilter = chip.dataset.filter;
+      [...filterChips.querySelectorAll('.chip')].forEach(c => c.classList.toggle('active', c===chip));
+      renderGallery();
+    });
+
+    // --- Render galería con filtro
+    function renderGallery(){
+      const items = state.photos
+        .filter(p => currentFilter==='todas' ? true : p.tipo===currentFilter)
+        .slice().reverse(); // recientes primero
+
+      gallery.innerHTML = items.map((p,i)=>`
+        <div class="ph">
+          <img src="${p.data}" alt="Acción de reciclaje">
+          <div class="meta">${p.catLabel} · ${p.tipo} · ${p.desc ? p.desc.replace(/</g,'&lt;').slice(0,60):''}</div>
+        </div>
+      `).join('');
+    }
+
+    // --- Limpiar
+    document.getElementById('clearPhotos').addEventListener('click', ()=>{
+      if(!confirm('¿Eliminar solo fotos guardadas?')) return;
+      state.photos = []; save(); renderGallery();
+    });
+    document.getElementById('clearAll').addEventListener('click', ()=>{
+      if(!confirm('¿Reiniciar todo? Se borrarán puntos y fotos.')) return;
+      localStorage.removeItem(KEY); location.reload();
+    });
+
+    renderGallery();
+  </script>
+</body>
+</html>
