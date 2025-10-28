@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,11 +46,11 @@
     .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
     h1.title{ font-family:Orbitron,Manrope; font-size:clamp(26px,5vw,48px); margin:6px 0 12px; }
     .muted{ color:var(--muted) }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px }                                   
     .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#3a3a3a; font-size:12px; }
 
     /* Secciones principales */
-    .wrap{ max-width:1200px; margin:0 auto; padding:0 clamp(16px, 4vw, 32px) 60px; }
+    .wrap{ max-width:1200px; margin:0 auto; padding:0             clamp(16px, 4vw, 32px) 60px; }
     section{ margin:16px 0 26px }
     section h2{ font-family:Orbitron,Manrope; margin:0 0 10px; letter-spacing:.02em }
 
@@ -120,23 +121,22 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo">♻️</div> #colocar imagen bakana
-        <div>
-          <b>ReciclaQuest</b><br>
-          <small style="color:var(--muted)">Juega · Registra · Sube de ranking</small>
+        <div class="logo">
+        <img src="{% static 'img/logo_greencycle.png' %}" alt="GreenCycle" style="width:42px; height:42px; border-radius:10px;">
         </div>
+          <div>
+            <b>GreenCycle</b><br>
+            <small style="color:var(--muted)">Juega · Recicla · Sube de ranking</small>
+          </div>
       </div>
-      <nav class="nav" aria-label="Navegación principal">
+       <nav class="nav" aria-label="Navegación principal">
+        <a href="#jugar">Jugar</a>
         <a href="#como">Cómo jugar</a>
         <a href="#subir">Subir acción</a>
-        <section id="ranking">
-         <h2>Ranking</h2>
-         <p class="muted">Mira el ranking completo y filtra por nombre.</p>
-         <a class="btn" href="ranking.html">Ver ranking completo</a>
-        </section>
+        <a href="/ranking/">Ranking</a>
         <a href="#ideas">Ideas</a>
         <a href="#reglas">Reglas</a>
-        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">Juguemos</a>
+        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">Verificar IA (Demo)</a>
       </nav>
     </div>
   </div>

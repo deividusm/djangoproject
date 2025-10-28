@@ -8,6 +8,35 @@ from .image_validator import es_imagen_relevante  # Importa la función de valid
 @login_required(login_url='account_login')
 def hub(request):
     return render(request, 'hub.html')  # Hub se muestra solo si el usuario está logueado
+@login_required(login_url='account_login')
+def ranking(request):
+    return render(request, 'ranking.html') 
+@login_required(login_url='account_login')
+def hub(request):
+    # Aquí buscarías en tu base de datos...
+    # (Por ahora, usamos datos de ejemplo)
+    
+    # Datos que irán al JavaScript
+    contexto_js = {
+        'me': {
+            'name': request.user.username,
+            'points': 150  # Deberías sacar esto de la base de datos
+        },
+        'photos': [
+            # Deberías sacar esto de la base de datos
+            {'data': '/media/fotos/mi_foto.jpg', 'catLabel': 'Plásticos', 'desc': 'Botellas de la semana'},
+        ],
+        'players': [
+            # Deberías sacar esto de la base de datos
+            {'name': 'VerdeFuerte', 'points': 220},
+            {'name': 'EcoNinja', 'points': 190},
+        ]
+    }
+    
+    return render(request, 'hub.html', {
+        'contexto_js': contexto_js  # Pasamos los datos al template
+    })
+
 
 # Vista para mostrar el formulario de verificación de imagen
 class VerificarMobileNetView(View):
@@ -44,28 +73,3 @@ class SubirImagenView(View):
 
 
 #cosa nueva
-@login_required(login_url='account_login')
-def hub(request):
-    # Aquí buscarías en tu base de datos...
-    # (Por ahora, usamos datos de ejemplo)
-    
-    # Datos que irán al JavaScript
-    contexto_js = {
-        'me': {
-            'name': request.user.username,
-            'points': 150  # Deberías sacar esto de la base de datos
-        },
-        'photos': [
-            # Deberías sacar esto de la base de datos
-            {'data': '/media/fotos/mi_foto.jpg', 'catLabel': 'Plásticos', 'desc': 'Botellas de la semana'},
-        ],
-        'players': [
-            # Deberías sacar esto de la base de datos
-            {'name': 'VerdeFuerte', 'points': 220},
-            {'name': 'EcoNinja', 'points': 190},
-        ]
-    }
-    
-    return render(request, 'hub.html', {
-        'contexto_js': contexto_js  # Pasamos los datos al template
-    })

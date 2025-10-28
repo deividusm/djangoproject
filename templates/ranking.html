@@ -8,266 +8,286 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      /* Paleta y tokens compartidos con hub.html */
-      --bg:#faf9f7;
-      --panel:#ffffff;
-      --panel-2:#fbfaf8;
-      --ink:#1a1a1a;
-      --muted:#6f6f6f;
-      --line:#e7e4df;
-      --green:#22c55e;
-      --green-2:#16a34a;
-      --radius:14px;
-      --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      --bg:#faf9f7; --panel:#ffffff; --panel-2:#fbfaf8;
+      --ink:#1a1a1a; --muted:#6f6f6f; --line:#e7e4df;
+      --green:#22c55e; --green-2:#16a34a;
+      --radius:14px; --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
     }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{ margin:0; font-family:Manrope,system-ui,Segoe UI,Roboto; color:var(--ink); background:var(--bg); }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:Manrope,system-ui,Segoe UI,Roboto;background:var(--bg);color:var(--ink)}
 
     /* Topbar */
     .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(250,249,247,.9); border-bottom:1px solid var(--line); }
-    .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto; }
-    .brand{ display:flex; align-items:center; gap:12px; }
-    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background:#fff; font-family:Orbitron; }
-    .brand b{ letter-spacing:.02em; font-size:18px }
-    .nav{ margin-left:auto; display:flex; flex-wrap:wrap; gap:8px }
-    .nav a{ text-decoration:none; color:var(--ink); padding:10px 12px; border-radius:12px; border:1px solid var(--line); background:#fff; }
+    .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto;}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:#fff;font-family:Orbitron}
+    .brand b{letter-spacing:.02em;font-size:18px}
+    .nav{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+    .nav a{ text-decoration:none;color:var(--ink);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#fff }
+    .nav a.active{ background:var(--green); color:#fff; border-color:#13803d }
     .nav a:hover{ background:#f6f5f3 }
 
-    .wrap{ max-width:1200px; margin:0 auto; padding:20px clamp(16px,4vw,32px) 60px; }
+    .wrap{max-width:1200px;margin:0 auto;padding:20px clamp(16px,4vw,32px) 60px}
+    .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
 
-    .header{ display:flex; align-items:end; flex-wrap:wrap; gap:12px; margin:6px 0 12px }
-    h1.title{ font-family:Orbitron,Manrope; font-size:clamp(22px,4.5vw,40px); margin:0 }
-    .muted{ color:var(--muted) }
+    h1,h2{font-family:Orbitron,Manrope;letter-spacing:.02em}
+    h1{font-size:clamp(22px,3.5vw,34px);margin:0 0 8px}
+    .muted{color:var(--muted)}
 
-    .toolbar{ display:grid; grid-template-columns: 1.2fr .8fr .8fr auto; gap:10px; margin:14px 0 }
-    .input, select, button{ border-radius:12px; border:1px solid var(--line); padding:10px 12px; background:#fff; color:var(--ink); }
-    .btn{ cursor:pointer; border:1px solid #dbe9df; background:linear-gradient(180deg, var(--green), var(--green-2)); color:#07110a; font-weight:800; letter-spacing:.02em; box-shadow: 0 8px 18px rgba(34,197,94,.20), inset 0 1px 0 rgba(255,255,255,.2); }
-    .btn.ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow) }
+    .btn{ cursor:pointer; border-radius:12px; padding:10px 14px; border:1px solid #dbe9df; background:linear-gradient(180deg, var(--green), var(--green-2)); color:#07110a; font-weight:800; letter-spacing:.02em; box-shadow: 0 8px 18px rgba(34,197,94,.20), inset 0 1px 0 rgba(255,255,255,.2); }
+    .btn.ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .controls{ display:grid; grid-template-columns: 1.2fr .8fr .6fr .6fr; gap:10px; margin:12px 0 16px }
+    .input, select{ background:#fff; border:1px solid var(--line); color:var(--ink); border-radius:12px; padding:10px 12px; width:100% }
 
-    .panel{ padding:14px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
+    .grid{display:grid;grid-template-columns: 1.3fr .7fr; gap:14px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} .controls{grid-template-columns:1fr 1fr 1fr 1fr} }
+    @media (max-width: 620px){ .controls{grid-template-columns:1fr 1fr} }
 
-    table{ width:100%; border-collapse: collapse; background:#fff; }
-    th, td{ border-bottom:1px solid var(--line); padding:10px; text-align:left; font-size:14px }
-    th{ color:#3a3a3a; font-weight:600; white-space:nowrap }
+    table{ width:100%; border-collapse:collapse; background:#fff }
+    th, td{ padding:10px; border-bottom:1px solid var(--line); text-align:left }
+    th{ color:#3a3a3a; font-weight:600 }
     tr:hover td{ background:#f6f5f3 }
+    .me{ background:linear-gradient(180deg, #f3fff6, #ffffff) }
+    .badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:#fff}
 
-    .table-wrap{ overflow:auto; border-radius:12px; border:1px solid var(--line); }
+    .pagi{ display:flex; gap:8px; align-items:center; justify-content:space-between; margin-top:10px }
+    .counter{ color:var(--muted); font-size:14px }
 
-    .pagination{ display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:10px }
-    .pill{ padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff }
+    .side{ display:grid; gap:10px }
+    .stat{ display:flex; justify-content:space-between; gap:8px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#fff; box-shadow:var(--shadow) }
+    .stat b{ font-size:18px }
 
-    .stats{ display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:10px; margin:10px 0 18px }
-    .stat{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow) }
-    .stat b{ display:block; font-size:18px; margin-bottom:4px }
-
-    @media (max-width: 980px){ .toolbar{ grid-template-columns: 1fr 1fr 1fr 1fr } }
-    @media (max-width: 640px){ .toolbar{ grid-template-columns: 1fr 1fr; } }
+    .help{font-size:13px;color:var(--muted);margin-top:6px}
   </style>
 </head>
 <body>
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="logo">♻️</div>
         <div>
           <b>ReciclaQuest</b><br>
-          <small class="muted">Ranking general</small>
+          <small style="color:var(--muted)">Juega · Registra · Sube de ranking</small>
         </div>
       </div>
       <nav class="nav" aria-label="Navegación principal">
-        <a href="hub.html">← Volver al Hub</a>
-        <a href="#" id="exportCsv">Exportar CSV</a>
-        <a href="#" id="resetLocal" title="Borrar ranking local">Reiniciar</a>
+        <a href="/hub/" >Inicio</a>
+        <a href="/ranking/" class="active">Ranking</a>
+        <a href="/verificar_mobilenet/">Verificar IA</a>
       </nav>
     </div>
   </div>
 
-  <main class="wrap">
-    <div class="header">
-      <h1 class="title">Ranking</h1>
-      <span class="muted">Top jugadores por puntos (local)</span>
-    </div>
+  <main class="wrap" id="ranking">
+    <h1>Ranking general</h1>
+    <p class="muted">Busca jugadores, ordena por puntos o nombre, y navega por páginas. Tu usuario aparece resaltado si está registrado.</p>
 
-    <section class="panel stats" aria-label="Resumen">
-      <div class="stat"><small class="muted">Jugadores</small><b id="kPlayers">0</b></div>
-      <div class="stat"><small class="muted">Puntos totales</small><b id="kTotalPts">0</b></div>
-      <div class="stat"><small class="muted">Mejor puntaje</small><b id="kBest">0</b></div>
-      <div class="stat"><small class="muted">Mi puntaje</small><b id="kMe">0</b></div>
-    </section>
+    <div class="grid">
+      <!-- Tabla y controles -->
+      <section class="card">
+        <div class="controls" role="region" aria-label="Controles de ranking">
+          <input id="q" class="input" type="search" placeholder="🔎 Buscar jugador por nombre..." aria-label="Buscar jugador">
+          <select id="sort" aria-label="Ordenar por">
+            <option value="points_desc">Orden: Puntos (↓)</option>
+            <option value="points_asc">Orden: Puntos (↑)</option>
+            <option value="name_asc">Orden: Nombre (A→Z)</option>
+            <option value="name_desc">Orden: Nombre (Z→A)</option>
+          </select>
+          <select id="pageSize" aria-label="Tamaño de página">
+            <option value="10">10 por página</option>
+            <option value="20" selected>20 por página</option>
+            <option value="50">50 por página</option>
+          </select>
+          <button id="reset" class="btn ghost" title="Borrar búsqueda y filtros">Limpiar</button>
+        </div>
 
-    <section class="toolbar" aria-label="Filtros y orden">
-      <input id="q" class="input" placeholder="Buscar jugador… (enter para fijar)" />
-      <select id="sort">
-        <option value="pts-desc">Orden: Puntos ↓</option>
-        <option value="pts-asc">Orden: Puntos ↑</option>
-        <option value="name-asc">Orden: Nombre A→Z</option>
-        <option value="name-desc">Orden: Nombre Z→A</option>
-      </select>
-      <select id="pageSize">
-        <option value="10">10 por página</option>
-        <option value="20" selected>20 por página</option>
-        <option value="50">50 por página</option>
-        <option value="100">100 por página</option>
-      </select>
-      <button class="btn" id="refresh">Actualizar</button>
-    </section>
-
-    <section class="panel">
-      <div class="table-wrap">
-        <table aria-describedby="tabla de ranking">
+        <table aria-describedby="tableHelp">
           <thead>
             <tr>
               <th style="width:70px">#</th>
               <th>Jugador</th>
-              <th>Puntos</th>
+              <th style="width:140px">Puntos</th>
+              <th style="width:160px">Acciones</th>
+              <th style="width:180px">Última acción</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
-      </div>
-      <div class="pagination">
-        <button class="pill" id="prev">Anterior</button>
-        <span class="muted" id="pageInfo">Página 1</span>
-        <button class="pill" id="next">Siguiente</button>
-      </div>
-    </section>
+        <div id="tableHelp" class="help">El ranking mezcla jugadores demo con tus datos locales guardados desde el Hub.</div>
+
+        <div class="pagi">
+          <div style="display:flex;gap:8px">
+            <button id="prev" class="btn ghost">« Anterior</button>
+            <button id="next" class="btn ghost">Siguiente »</button>
+          </div>
+          <div class="counter" id="counter">—</div>
+        </div>
+      </section>
+
+      <!-- Panel lateral -->
+      <aside class="side">
+        <section class="card">
+          <h2 style="margin-top:0">Tu perfil</h2>
+          <div class="stat"><span>Nombre</span><b id="meName">—</b></div>
+          <div class="stat"><span>Puntos</span><b id="mePoints">0</b></div>
+          <div class="stat"><span>Acciones</span><b id="meActs">0</b></div>
+          <div class="stat"><span>Racha</span><b id="meStreak">0 días</b></div>
+          <button id="setName" class="btn" style="width:100%;margin-top:8px">Cambiar/Definir nombre</button>
+          <p class="help">Si no defines un nombre, no aparecerás en el ranking general.</p>
+        </section>
+
+        <section class="card">
+          <h2 style="margin-top:0">Consejos rápidos</h2>
+          <div class="stat"><span>Enjuaga envases</span><span class="badge">+consistencia</span></div>
+          <div class="stat"><span>Comprime botellas/cajas</span><span class="badge">+espacio</span></div>
+          <div class="stat"><span>Separa vidrio sin tapas</span><span class="badge">+calidad</span></div>
+        </section>
+      </aside>
+    </div>
   </main>
 
   <script>
-    // Clave de estado compartida con hub.html
+    // === Estado local compatible con HUB ===
     const KEY = 'reciclaquest-hub-v1';
-
-    // Carga estado o crea por defecto (coincide con hub)
-    const defaultPlayers = [
+    const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    state.me = state.me || { name: null, points: 0 };
+    state.photos = state.photos || [];
+    // Jugadores demo base (si no hay en storage)
+    const demoPlayers = [
       {name:'VerdeFuerte', points:220}, {name:'EcoNinja', points:190}, {name:'PlanetaKid', points:170},
       {name:'LuzVerde', points:160}, {name:'Matias', points:150}, {name:'Jose', points:140},
       {name:'Dani', points:120}, {name:'David', points:110}, {name:'Agus', points:100}
     ];
+    state.players = state.players || demoPlayers;
 
-    function loadState(){
-      const raw = JSON.parse(localStorage.getItem(KEY) || '{}');
-      raw.players = Array.isArray(raw.players) && raw.players.length ? raw.players : defaultPlayers.slice();
-      raw.me = raw.me || { name: null, points: 0 };
-      raw.photos = Array.isArray(raw.photos) ? raw.photos : [];
-      return raw;
-    }
-
-    let state = loadState();
-
-    // UI refs
-    const q = document.getElementById('q');
-    const sort = document.getElementById('sort');
-    const pageSizeSel = document.getElementById('pageSize');
-    const refreshBtn = document.getElementById('refresh');
-    const tbody = document.getElementById('tbody');
-    const pageInfo = document.getElementById('pageInfo');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-    const kPlayers = document.getElementById('kPlayers');
-    const kTotalPts = document.getElementById('kTotalPts');
-    const kBest = document.getElementById('kBest');
-    const kMe = document.getElementById('kMe');
-    const exportCsv = document.getElementById('exportCsv');
-    const resetLocal = document.getElementById('resetLocal');
-
-    // Estado de la vista
-    let page = 1;
-    let pageSize = +pageSizeSel.value;
-    let query = '';
-
-    function getPlayers(){
-      // Mezcla jugadores + "me" solo si tiene nombre
-      const players = [...state.players];
-      if(state.me && state.me.name && state.me.name !== 'Invitado'){
-        const i = players.findIndex(p => p.name === state.me.name);
-        if(i >= 0) players[i].points = state.me.points;
-        else players.push({ name: state.me.name, points: state.me.points });
-      }
-      return players;
-    }
-
-    function sortPlayers(list){
-      const [key, dir] = sort.value.split('-');
-      const s = list.slice().sort((a,b)=>{
-        if(key === 'pts') return (a.points - b.points) * (dir === 'asc' ? 1 : -1);
-        if(key === 'name') return a.name.localeCompare(b.name) * (dir === 'asc' ? 1 : -1);
-        return 0;
-      });
+    // === Utilidades ===
+    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+    function uniqueDay(ts){ const d=new Date(ts); return new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(); }
+    function calcStreak(photos){
+      if(!photos.length) return 0;
+      const days=[...new Set(photos.map(p=>uniqueDay(p.ts)))].sort((a,b)=>b-a);
+      let s=1; for(let i=1;i<days.length;i++){ const diff=(days[i-1]-days[i])/(1000*60*60*24); if(diff===1) s++; else break; }
       return s;
     }
+    function lastTs(photos){ return photos.length ? Math.max(...photos.map(p=>p.ts||0)) : null; }
+    function fmtDate(ts){ if(!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString()+' '+d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+    function includeMe(){ return !!(state.me.name && state.me.name!=='Invitado'); }
 
-    function filterPlayers(list){
-      const t = query.trim().toLowerCase();
-      if(!t) return list;
-      return list.filter(p => (p.name||'').toLowerCase().includes(t));
+    // === Dataset combinado ===
+    function buildPlayers(){
+      // base: copiar para no mutar
+      const map = new Map();
+      (state.players||[]).forEach(p => { if(p?.name) map.set(p.name, {name:p.name, points:+p.points||0, actions:null, last:null}); });
+      // métricas del usuario local
+      const myActs = (state.photos||[]).length;
+      const myLast = lastTs(state.photos||[]);
+      if(includeMe()){
+        map.set(state.me.name, {
+          name: state.me.name,
+          points: +state.me.points||0,
+          actions: myActs||0,
+          last: myLast||null,
+          me: true
+        });
+      }
+      // devuelve arreglo
+      return [...map.values()];
     }
 
-    function paginate(list){
-      const total = list.length;
-      const pages = Math.max(1, Math.ceil(total / pageSize));
-      if(page > pages) page = pages;
-      const start = (page - 1) * pageSize;
-      const end = start + pageSize;
-      return { slice: list.slice(start, end), total, pages };
+    // === Render ===
+    const tbody = document.getElementById('tbody');
+    const q = document.getElementById('q');
+    const sortSel = document.getElementById('sort');
+    const pageSizeSel = document.getElementById('pageSize');
+    const resetBtn = document.getElementById('reset');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const counterEl = document.getElementById('counter');
+
+    let DATA = buildPlayers();
+    let page=1, pageSize=+pageSizeSel.value;
+
+    function applyFilters(){
+      const term = q.value.trim().toLowerCase();
+      let rows = [...DATA];
+      if(term) rows = rows.filter(r => r.name.toLowerCase().includes(term));
+
+      switch(sortSel.value){
+        case 'points_asc': rows.sort((a,b)=>(a.points||0)-(b.points||0)); break;
+        case 'name_asc': rows.sort((a,b)=>a.name.localeCompare(b.name)); break;
+        case 'name_desc': rows.sort((a,b)=>b.name.localeCompare(a.name)); break;
+        default: rows.sort((a,b)=>(b.points||0)-(a.points||0)); // points_desc
+      }
+
+      return rows;
     }
 
     function render(){
-      const base = getPlayers();
-      const filtered = filterPlayers(base);
-      const ordered = sortPlayers(filtered);
+      const rows = applyFilters();
+      const total = rows.length;
+      const pages = Math.max(1, Math.ceil(total / pageSize));
+      page = Math.min(page, pages);
 
-      // Resumen
-      kPlayers.textContent = base.length;
-      kTotalPts.textContent = base.reduce((s,p)=>s+(p.points||0),0);
-      kBest.textContent = base.reduce((m,p)=> Math.max(m, p.points||0), 0);
-      kMe.textContent = state.me && state.me.points ? state.me.points : 0;
+      const start = (page-1)*pageSize;
+      const slice = rows.slice(start, start+pageSize);
 
-      // Tabla
-      const { slice, total, pages } = paginate(ordered);
-      tbody.innerHTML = slice.map((p, i)=>{
-        const rank = (page - 1) * pageSize + i + 1;
-        const isMe = state.me && p.name === state.me.name;
-        return `<tr${isMe ? ' style="background:#f6fff8"' : ''}><td>${rank}</td><td>${p.name||'—'}</td><td>${p.points||0}</td></tr>`;
+      tbody.innerHTML = slice.map((r,i)=>{
+        const pos = start + i + 1;
+        const trClass = r.me ? ' class="me"' : '';
+        const acts = r.actions==null ? '—' : r.actions;
+        return `<tr${trClass}>
+          <td><b>${pos}</b></td>
+          <td>${r.name}${r.me ? ' <span class="badge">Tú</span>':''}</td>
+          <td><b>${r.points||0}</b></td>
+          <td>${acts}</td>
+          <td>${fmtDate(r.last)}</td>
+        </tr>`;
       }).join('');
 
-      pageInfo.textContent = `Página ${page} / ${pages} · ${total} jugadores`;
-      prevBtn.disabled = page <= 1;
-      nextBtn.disabled = page >= pages;
+      prevBtn.disabled = page<=1;
+      nextBtn.disabled = page>=pages;
+      counterEl.textContent = total ? `Mostrando ${start+1}–${Math.min(start+pageSize,total)} de ${total}` : 'Sin resultados';
     }
 
-    // Eventos
-    q.addEventListener('keydown', e=>{ if(e.key==='Enter'){ query = q.value; page = 1; render(); }});
-    sort.addEventListener('change', ()=>{ page = 1; render(); });
-    pageSizeSel.addEventListener('change', ()=>{ pageSize = +pageSizeSel.value; page = 1; render(); });
-    refreshBtn.addEventListener('click', ()=>{ state = loadState(); render(); });
-    prevBtn.addEventListener('click', ()=>{ if(page>1){ page--; render(); }});
+    // === Perfil lateral ===
+    const meNameEl = document.getElementById('meName');
+    const mePointsEl = document.getElementById('mePoints');
+    const meActsEl = document.getElementById('meActs');
+    const meStreakEl = document.getElementById('meStreak');
+    function renderMe(){
+      meNameEl.textContent = state.me.name || '—';
+      mePointsEl.textContent = state.me.points || 0;
+      meActsEl.textContent = (state.photos||[]).length;
+      meStreakEl.textContent = (calcStreak(state.photos||[])) + ' días';
+    }
+
+    // === Eventos ===
+    q.addEventListener('input', ()=>{ page=1; render(); });
+    sortSel.addEventListener('change', ()=>{ page=1; render(); });
+    pageSizeSel.addEventListener('change', ()=>{ pageSize=+pageSizeSel.value; page=1; render(); });
+    resetBtn.addEventListener('click', ()=>{ q.value=''; sortSel.value='points_desc'; pageSizeSel.value='20'; pageSize=20; page=1; render(); });
+
+    prevBtn.addEventListener('click', ()=>{ if(page>1){ page--; render(); } });
     nextBtn.addEventListener('click', ()=>{ page++; render(); });
 
-    exportCsv.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const rows = [['rank','name','points']];
-      const base = sortPlayers(filterPlayers(getPlayers()));
-      base.forEach((p,i)=> rows.push([i+1, p.name||'', p.points||0]));
-      const csv = rows.map(r=> r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'reciclaquest-ranking.csv'; a.click();
-      URL.revokeObjectURL(url);
+    document.getElementById('setName').addEventListener('click', ()=>{
+      const curr = state.me.name || '';
+      const name = prompt('Escribe tu nombre para el ranking:', curr).trim();
+      if(!name) return;
+      state.me.name = name;
+      // si no existía en players, agrégalo
+      const idx = (state.players||[]).findIndex(p=>p.name===name);
+      if(idx<0) state.players.push({name, points: state.me.points||0});
+      save();
+      DATA = buildPlayers();
+      renderMe(); page=1; render();
+      alert('¡Nombre guardado! Ahora apareces en el ranking.');
     });
 
-    resetLocal.addEventListener('click', (e)=>{
-      e.preventDefault();
-      if(!confirm('¿Reiniciar datos locales? Se mantendrá la plantilla por defecto.')) return;
-      localStorage.removeItem(KEY);
-      state = loadState();
-      render();
-    });
-
-    // Primer render
-    render();
+    // === Init ===
+    renderMe(); render();
   </script>
 </body>
 </html>
