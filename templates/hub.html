@@ -150,9 +150,6 @@
         <span class="chip">Puntos & Ranking</span>
         <span class="chip">Lista de tareas</span>
       </div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap">
-        <button class="btn" id="playBtn">Jugar ahora</button>
-      </div>
     </div>
 
     <!-- Tarjeta reemplazada: Mi progreso -->
@@ -194,50 +191,7 @@
       </div>
     </section>
 
-    <!-- SUBIR ACCIÓN (con fotos) -->
-    <section id="subir">
-      <h2>Subir acción</h2>
-      <div class="uploader">
-        <div class="drop" id="drop">
-          <div>
-            <p><b>Arrastra tus fotos aquí</b> o <label style="text-decoration:underline; cursor:pointer"><input type="file" id="fileInput" accept="image/*" multiple hidden>haz clic para elegir</label></p>
-            <small class="muted">Formatos: JPG/PNG • Se guardan de forma local (demo).</small>
-          </div>
-        </div>
-        <div class="form">
-          <label>Categoría de acción</label>
-          <select id="category">
-            <option value="organicos">Orgánicos (compost)</option>
-            <option value="papel">Papel/Cartón</option>
-            <option value="plastico">Plásticos</option>
-            <option value="vidrio">Vidrio</option>
-          </select>
-          <label>Descripción</label>
-          <textarea id="desc" placeholder="Ej: Dejé 3 botellas de vidrio en el punto limpio del barrio."></textarea>
-          <button class="btn" id="submitAction">Registrar acción</button>
-          <small class="muted">Pronto: cálculo <b>CO₂ evitado</b> por acción.</small>
-        </div>
-      </div>
-      <div style="margin-top:12px">
-        <h3 style="margin:0 0 8px">Mis evidencias</h3>
-        <div class="gallery" id="gallery"></div>
-        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
-          <button class="btn ghost" id="clearPhotos">Limpiar fotos</button>
-          <button class="btn ghost" id="clearAll">Reiniciar todo</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- IDEAS -->
-    <section id="ideas">
-      <h2>Ideas de juego</h2>
-      <div class="grid3">
-        <div class="tile"><strong>Misiones semanales</strong><small>Cumple 3 tareas por semana para bonus (+20).</small></div>
-        <div class="tile"><strong>Rachas</strong><small>Registra al menos 1 acción por día durante 7 días (+50).</small></div>
-        <div class="tile"><strong>Cooperativo</strong><small>Forma equipo con tu curso o barrio y escala juntos.</small></div>
-      </div>
-    </section>
-
+   
     <!-- REGLAS / Próximas integraciones -->
     <section id="reglas">
       <h2>Reglas y próximas integraciones</h2>
