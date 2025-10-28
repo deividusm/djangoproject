@@ -8,61 +8,92 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#faf9f7; --panel:#ffffff; --panel-2:#fbfaf8;
-      --ink:#1a1a1a; --muted:#6f6f6f; --line:#e7e4df;
-      --green:#22c55e; --green-2:#16a34a;
-      --radius:14px; --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      /* === PALETA DE COLORES "ELEGANT BLACK" (MODO OSCURO) === */
+      --bg: #0F0F0F;
+      --panel: #1B1B1B;
+      --panel-2: #252525;
+      --ink: #EAEAEA;
+      --muted: #A0A0A0;
+      --line: #303030;
+      --green: #22c55e;
+      --green-2: #16a34a;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.05);
     }
     *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font-family:Manrope,system-ui,Segoe UI,Roboto;background:var(--bg);color:var(--ink)}
 
     /* Topbar */
-    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(250,249,247,.9); border-bottom:1px solid var(--line); }
+    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(15, 15, 15, .8); border-bottom:1px solid var(--line); }
     .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto;}
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:#fff;font-family:Orbitron}
+    .logo{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-family:Orbitron}
     .brand b{letter-spacing:.02em;font-size:18px}
     .nav{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
-    .nav a{ text-decoration:none;color:var(--ink);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#fff }
+    .nav a{ text-decoration:none;color:var(--ink);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel) }
     .nav a.active{ background:var(--green); color:#fff; border-color:#13803d }
-    .nav a:hover{ background:#f6f5f3 }
+    .nav a:hover{ background:var(--panel-2) }
 
     .wrap{max-width:1200px;margin:0 auto;padding:20px clamp(16px,4vw,32px) 60px}
-    .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
+    
+    /* === MEJORA JS/CSS: Shimmer en Tarjetas === */
+    .card{ 
+      position: relative; 
+      overflow: hidden; 
+      padding:16px; border-radius:16px; border:1px solid var(--line); background:var(--panel); box-shadow:var(--shadow); 
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: var(--mx, 50%);
+      width: 300px;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 60%);
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    /* === FIN MEJORA === */
 
     h1,h2{font-family:Orbitron,Manrope;letter-spacing:.02em}
     h1{font-size:clamp(22px,3.5vw,34px);margin:0 0 8px}
     .muted{color:var(--muted)}
 
     .btn{ cursor:pointer; border-radius:12px; padding:10px 14px; border:1px solid #dbe9df; background:linear-gradient(180deg, var(--green), var(--green-2)); color:#07110a; font-weight:800; letter-spacing:.02em; box-shadow: 0 8px 18px rgba(34,197,94,.20), inset 0 1px 0 rgba(255,255,255,.2); }
-    .btn.ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .btn.ghost{ background:transparent; color:var(--ink); border:1px solid var(--line); box-shadow:none; }
+    .btn.ghost:hover{ background: var(--panel-2); }
     .btn:disabled{opacity:.6;cursor:not-allowed}
     .controls{ display:grid; grid-template-columns: 1.2fr .8fr .6fr .6fr; gap:10px; margin:12px 0 16px }
-    .input, select{ background:#fff; border:1px solid var(--line); color:var(--ink); border-radius:12px; padding:10px 12px; width:100% }
+    .input, select{ background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:12px; padding:10px 12px; width:100% }
 
     .grid{display:grid;grid-template-columns: 1.3fr .7fr; gap:14px}
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} .controls{grid-template-columns:1fr 1fr 1fr 1fr} }
     @media (max-width: 620px){ .controls{grid-template-columns:1fr 1fr} }
 
-    table{ width:100%; border-collapse:collapse; background:#fff }
+    table{ width:100%; border-collapse:collapse; background:var(--panel); border-radius: var(--radius); overflow: hidden; }
     th, td{ padding:10px; border-bottom:1px solid var(--line); text-align:left }
-    th{ color:#3a3a3a; font-weight:600 }
-    tr:hover td{ background:#f6f5f3 }
-    .me{ background:linear-gradient(180deg, #f3fff6, #ffffff) }
-    .badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:#fff}
+    th{ color:var(--ink); font-weight:600 }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td{ background:var(--panel-2) }
+    .me{ background:linear-gradient(180deg, #111e16, #1B1B1B) } /* Gradiente sutil verde oscuro */
+    .badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:var(--panel-2)}
 
     .pagi{ display:flex; gap:8px; align-items:center; justify-content:space-between; margin-top:10px }
     .counter{ color:var(--muted); font-size:14px }
 
     .side{ display:grid; gap:10px }
-    .stat{ display:flex; justify-content:space-between; gap:8px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#fff; box-shadow:var(--shadow) }
+    .stat{ display:flex; justify-content:space-between; gap:8px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel-2); box-shadow:var(--shadow) }
     .stat b{ font-size:18px }
 
     .help{font-size:13px;color:var(--muted);margin-top:6px}
   </style>
 </head>
 <body>
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -74,8 +105,8 @@
       </div>
       <nav class="nav" aria-label="Navegación principal">
         <a href="/hub/" >Inicio</a>
-        <a href="/ranking/" class="active">Ranking</a>
-        <a href="/verificar_mobilenet/">Verificar IA</a>
+        <a href="/mapapuntos/" >Puntos de reciclaje</a>
+        <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">JUGAR!</a>
       </nav>
     </div>
   </div>
@@ -85,7 +116,6 @@
     <p class="muted">Busca jugadores, ordena por puntos o nombre, y navega por páginas. Tu usuario aparece resaltado si está registrado.</p>
 
     <div class="grid">
-      <!-- Tabla y controles -->
       <section class="card">
         <div class="controls" role="region" aria-label="Controles de ranking">
           <input id="q" class="input" type="search" placeholder="🔎 Buscar jugador por nombre..." aria-label="Buscar jugador">
@@ -126,7 +156,6 @@
         </div>
       </section>
 
-      <!-- Panel lateral -->
       <aside class="side">
         <section class="card">
           <h2 style="margin-top:0">Tu perfil</h2>
@@ -148,6 +177,8 @@
     </div>
   </main>
 
+  <script>window.addEventListener('pointermove',e=>{document.documentElement.style.setProperty('--mx', (e.clientX/window.innerWidth*100)+'%')});</script>
+  
   <script>
     // === Estado local compatible con HUB ===
     const KEY = 'reciclaquest-hub-v1';
@@ -157,7 +188,7 @@
     // Jugadores demo base (si no hay en storage)
     const demoPlayers = [
       {name:'VerdeFuerte', points:220}, {name:'EcoNinja', points:190}, {name:'PlanetaKid', points:170},
-      {name:'LuzVerde', points:160}, {name:'Matias', points:150}, {name:'Jose', points:140},
+      {name:'LuzVerde', points:160}, {nameT:'Matias', points:150}, {name:'Jose', points:140},
       {name:'Dani', points:120}, {name:'David', points:110}, {name:'Agus', points:100}
     ];
     state.players = state.players || demoPlayers;
@@ -274,7 +305,7 @@
 
     document.getElementById('setName').addEventListener('click', ()=>{
       const curr = state.me.name || '';
-      const name = prompt('Escribe tu nombre para el ranking:', curr).trim();
+      const name = prompt('Escribe tu nombre para el ranking:', curr)?.trim();
       if(!name) return;
       state.me.name = name;
       // si no existía en players, agrégalo

@@ -9,16 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#faf9f7;
-      --panel:#ffffff;
-      --panel-2:#fbfaf8;
-      --ink:#1a1a1a;
-      --muted:#6f6f6f;
-      --line:#e7e4df;
-      --green:#22c55e;
-      --green-2:#16a34a;
-      --radius:14px;
-      --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      /* === PALETA DE COLORES "ELEGANT BLACK" (MODO OSCURO) === */
+      --bg: #0F0F0F;
+      --panel: #1B1B1B;
+      --panel-2: #252525;
+      --ink: #EAEAEA;
+      --muted: #A0A0A0;
+      --line: #303030;
+      --green: #22c55e;
+      --green-2: #16a34a;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.05);
     }
 
     *{box-sizing:border-box}
@@ -28,21 +29,46 @@
       background: var(--bg);
     }
 
-    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(250,249,247,.9); border-bottom:1px solid var(--line); }
+    /* Topbar */
+    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(15, 15, 15, .8); border-bottom:1px solid var(--line); }
     .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto;}
     .brand{ display:flex; align-items:center; gap:12px; }
-    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background:#fff; font-family:Orbitron; }
+    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background:var(--panel); font-family:Orbitron; }
     .brand b{ letter-spacing:.02em; font-size:18px }
     .nav{ margin-left:auto; display:flex; flex-wrap:wrap; gap:8px }
-    .nav a{ text-decoration:none; color:var(--ink); opacity:1; padding:10px 12px; border-radius:12px; border:1px solid var(--line); background:#fff; box-shadow:none; transition: transform 0.2s ease-in-out; }
-    .nav a:hover{ background:#f6f5f3; transform: scale(1.1); }
+    .nav a{ text-decoration:none; color:var(--ink); opacity:1; padding:10px 12px; border-radius:12px; border:1px solid var(--line); background:var(--panel); box-shadow:none; transition: transform 0.2s ease-in-out; }
+    .nav a:hover{ background:var(--panel-2); transform: scale(1.1); }
 
     .hero{ max-width:1200px; margin:0 auto; padding:28px clamp(16px, 4vw, 32px); display:grid; grid-template-columns: 1fr; gap:22px; align-items:center;}
-    .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
+    
+    /* === MEJORA JS/CSS: Shimmer en Tarjetas y Tiles === */
+    .card, .tile {
+      position: relative;
+      overflow: hidden;
+      padding:16px; border-radius:16px; border:1px solid var(--line); background:var(--panel); box-shadow:var(--shadow);
+    }
+    .card::before, .tile::before {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: var(--mx, 50%);
+      width: 300px;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 60%);
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .card:hover::before, .tile:hover::before {
+      opacity: 1;
+    }
+    /* === FIN MEJORA === */
+
     h1.title{ font-family:Orbitron,Manrope; font-size:clamp(26px,5vw,48px); margin:6px 0 12px; }
     .muted{ color:var(--muted) }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px }                                   
-    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#3a3a3a; font-size:12px; }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px }
+    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:var(--panel-2); color:var(--ink); font-size:12px; }
 
     /* Secciones principales */
     .wrap{ max-width:1200px; margin:0 auto; padding:0 clamp(16px, 4vw, 32px) 60px; }
@@ -50,7 +76,7 @@
     section h2{ font-family:Orbitron,Manrope; margin:0 0 10px; letter-spacing:.02em }
 
     .grid3{ display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:14px }
-    .tile{ position:relative; padding:14px; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:var(--shadow); }
+    .tile{ padding:14px; } /* Estilos base ya aplicados arriba */
     .tile strong{ display:block; margin-bottom:6px }
     .tile small{ color:var(--muted) }
 
@@ -66,7 +92,8 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <script>window.addEventListener('pointermove',e=>{document.documentElement.style.setProperty('--mx', (e.clientX/window.innerWidth*100)+'%')});</script>
+
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -78,17 +105,15 @@
           <small style="color:var(--muted)">Juega · Recicla · Sube de ranking</small>
         </div>
       </div>
-       <nav class="nav" aria-label="Navegación principal">
-        <a href="/hub/">Hub</a>
-        <a href="#como">Cómo jugar</a>
+        <nav class="nav" aria-label="Navegación principal">
+        <a href="/hub/">Inicio</a>
         <a href="/ranking/">Ranking</a>
-        <a href="#mapa">Puntos de reciclaje</a>
+        <a href="/mapapuntos">Puntos de reciclaje</a>
         <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">JUGAR!</a>
       </nav>
     </div>
   </div>
 
-  <!-- HERO -->
   <header class="hero" id="jugar">
     <div class="card">
       <h1 class="title">¡Sé parte del cambio!</h1>
@@ -127,5 +152,3 @@
 
 </body>
 </html>
-
-

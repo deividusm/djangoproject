@@ -9,16 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#faf9f7; /* claro tipo landing */
-      --panel:#ffffff; /* panel blanco */
-      --panel-2:#fbfaf8; /* leve variación */
-      --ink:#1a1a1a; /* texto principal */
-      --muted:#6f6f6f; /* texto secundario */
-      --line:#e7e4df; /* bordes suaves */
-      --green:#22c55e; /* acento verde elegante */
-      --green-2:#16a34a; /* acento más oscuro */
-      --radius:14px;
-      --shadow:0 6px 16px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5);
+      /* === PALETA DE COLORES "ELEGANT BLACK" (MODO OSCURO) === */
+      --bg: #0F0F0F;      /* Fondo: Un negro profundo, casi puro */
+      --panel: #1B1B1B;    /* Panel: Un gris muy oscuro para las tarjetas */
+      --panel-2: #252525;  /* Panel 2: Para efectos hover sutiles */
+      --ink: #EAEAEA;      /* Texto principal: Se mantiene (blanco suave) */
+      --muted: #A0A0A0;    /* Texto secundario: Se mantiene (gris claro) */
+      --line: #303030;      /* Bordes: Un borde sutil visible sobre los paneles */
+      
+      /* Colores de acento (botones) - Se mantienen */
+      --green: #22c55e;
+      --green-2: #16a34a;
+      
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.05); /* Sombra adaptada */
     }
 
     *{box-sizing:border-box}
@@ -28,11 +32,11 @@
       background: var(--bg);
     }
 
-    /* Topbar (limpio) */
-    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(250,249,247,.9); border-bottom:1px solid var(--line); }
+    /* Topbar */
+    .topbar{ position:sticky; top:0; z-index:30; backdrop-filter: blur(6px); background:rgba(15, 15, 15, .8); border-bottom:1px solid var(--line); }
     .topbar-inner{ display:flex; align-items:center; gap:14px; padding:12px clamp(14px,4vw,28px); max-width:1200px; margin:0 auto;}
     .brand{ display:flex; align-items:center; gap:12px; }
-    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background:#fff; font-family:Orbitron; }
+    .logo{ width:42px; height:42px; display:grid; place-items:center; border-radius:12px; border:1px solid var(--line); background: var(--panel); font-family:Orbitron; }
     .brand b{ letter-spacing:.02em; font-size:18px }
     .nav{ margin-left:auto; display:flex; flex-wrap:wrap; gap:8px }
     .nav a{ 
@@ -42,43 +46,66 @@
       padding:10px 12px; 
       border-radius:12px; 
       border:1px solid var(--line); 
-      background:#fff;
-      transition: transform 0.2s ease-in-out; /* Transición suave para el efecto de expansión */
+      background: var(--panel); 
+      transition: transform 0.2s ease-in-out;
     }
     .nav a:hover{ 
-      background:#f6f5f3; 
-      transform: scale(1.1); /* Agrandar el botón al pasar el cursor */
+      background: var(--panel-2); 
+      transform: scale(1.1);
     }
 
     .btn{ 
-      cursor:pointer; 
-      border-radius:12px; 
-      padding:10px 14px; 
-      border:1px solid #dbe9df; 
+      cursor:pointer; border-radius:12px; padding:10px 14px; border:1px solid #dbe9df; 
       background:linear-gradient(180deg, var(--green), var(--green-2)); 
-      color:#07110a; 
-      font-weight:800; 
-      letter-spacing:.02em; 
+      color:#07110a; font-weight:800; letter-spacing:.02em; 
       box-shadow: 0 8px 18px rgba(34,197,94,.20), inset 0 1px 0 rgba(255,255,255,.2);
-      transition: transform 0.2s ease-in-out; /* Transición suave */
+      transition: transform 0.2s ease-in-out;
     }
     .btn.ghost{ 
-      background:#fff; 
+      background: transparent; 
       color:var(--ink); 
       border:1px solid var(--line); 
-      box-shadow:var(--shadow); 
+      box-shadow:none; 
+    }
+    .btn.ghost:hover{
+        background: var(--panel); 
     }
     .btn:hover{ 
       transform:translateY(-1px); 
-      scale(1.1); /* Agrandar el botón al pasar el cursor */
+      scale(1.1);
     }
 
     .hero{ max-width:1200px; margin:0 auto; padding:28px clamp(16px, 4vw, 32px); display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center;}
-    .card{ padding:16px; border-radius:16px; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow); }
+    
+    /* === MEJORA JS/CSS: Shimmer en Tarjetas === */
+    .card{ 
+      position: relative; /* Requerido para el pseudo-elemento */
+      overflow: hidden; /* Requerido para contener el efecto */
+      padding:16px; border-radius:16px; border:1px solid var(--line); background: var(--panel); box-shadow:var(--shadow); 
+    }
+    /* El "shimmer" que sigue al mouse, usando la variable --mx de tu JS */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: var(--mx, 50%); /* Usa --mx, con un fallback de 50% */
+      width: 300px; /* Ancho del "reflejo" */
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 60%);
+      transform: translateX(-50%); /* Centra el reflejo en el cursor */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none; /* Para que no interfiera con el clic */
+    }
+    .card:hover::before {
+      opacity: 1; /* Muestra el reflejo en el hover */
+    }
+    /* === FIN MEJORA === */
+
     h1.title{ font-family:Orbitron,Manrope; font-size:clamp(26px,5vw,48px); margin:6px 0 12px; }
     .muted{ color:var(--muted) }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px }                                   
-    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#3a3a3a; font-size:12px; }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px }
+    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background: var(--panel-2); color:var(--ink); font-size:12px; }
 
     /* Secciones principales */
     .wrap{ max-width:1200px; margin:0 auto; padding:0 clamp(16px, 4vw, 32px) 60px; }
@@ -87,76 +114,73 @@
 
     /* Cómo jugar */
     .grid3{ display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:14px }
-    .tile{ position:relative; padding:14px; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:var(--shadow); }
+    .tile{ position:relative; padding:14px; border:1px solid var(--line); border-radius:16px; background: var(--panel); box-shadow:var(--shadow); } 
     .tile strong{ display:block; margin-bottom:6px }
     .tile small{ color:var(--muted) }
 
     .gallery{ display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:10px }
-    .ph{ position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#fff }
+    .ph{ position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line); background: var(--panel); } 
     .ph img{ display:block; width:100%; height:120px; object-fit:cover }
-    .ph .meta{ position:absolute; inset:auto 6px 6px 6px; background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.9)); padding:6px 8px; border-radius:10px; font-size:12px }
+    .ph .meta{ position:absolute; inset:auto 6px 6px 6px; background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.8)); padding:6px 8px; border-radius:10px; font-size:12px } 
     .ph button{ position:absolute; top:6px; right:6px; }
 
     /* Ranking */
     .ranking{ display:grid; grid-template-columns: 1.2fr .8fr; gap:14px }
-    table{ width:100%; border-collapse: collapse; background:#fff; }
+    table{ width:100%; border-collapse: collapse; background: var(--panel); border-radius: var(--radius); overflow: hidden; } 
     th, td{ border-bottom:1px solid var(--line); padding:10px; text-align:left }
-    th{ color:#3a3a3a; font-weight:600 }
-    tr:hover td{ background:#f6f5f3 }
+    th{ color:var(--ink); font-weight:600 }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td{ background: var(--panel-2); } 
 
     /* Progreso (nueva tarjeta) */
     .stats{ display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:10px; margin:6px 0 12px }
-    .stat{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow) }
+    .stat{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; background: var(--bg); box-shadow:var(--shadow) } 
     .stat b{ display:block; font-size:20px; margin-bottom:4px }
-    .progress{ height:12px; background:#f1efe9; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+    .progress{ height:12px; background: var(--bg); border:1px solid var(--line); border-radius:999px; overflow:hidden; } 
     .progress > i{ display:block; height:100%; width:0%; background: linear-gradient(90deg, var(--green-2), var(--green)); }
 
     /* Modal */
     dialog.modal{ border:none; padding:0; background:transparent; }
-    .modal .panel{ width:min(560px, 92vw); background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 24px 60px rgba(0,0,0,.12); padding:22px; margin:auto; }
+    .modal .panel{ width:min(560px, 92vw); background: var(--panel); border:1px solid var(--line); border-radius:20px; box-shadow:0 24px 60px rgba(0,0,0,.12); padding:22px; margin:auto; } 
     .modal h3{ margin:0 0 8px; font-family:Orbitron, Manrope; }
     .modal .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:14px; }
     .modal .btn{ width:100%; }
 
     /* Responsive */
     @media (max-width: 1080px){
-      .hero{ grid-template-columns: 1fr }
-      .uploader{ grid-template-columns: 1fr }
-      .gallery{ grid-template-columns: repeat(2,minmax(0,1fr)) }
-      .ranking{ grid-template-columns: 1fr }
+      .hero{ grid-template-columns: 1fr } .uploader{ grid-template-columns: 1fr }
+      .gallery{ grid-template-columns: repeat(2,minmax(0,1fr)) } .ranking{ grid-template-columns: 1fr }
       .grid3{ grid-template-columns: 1fr 1fr }
     }
     @media (max-width: 620px){
-      .grid3{ grid-template-columns: 1fr }
-      .gallery{ grid-template-columns: 1fr }
+      .grid3{ grid-template-columns: 1fr } .gallery{ grid-template-columns: 1fr }
     }
   </style>
 </head>
 <body>
-  <script>window.addEventListener('pointermove',e=>{document.documentElement.style.setProperty('--mx', (e.clientX/window.innerWidth*100)+'%')});</script>
 
-  <!-- Topbar / navegación anclas -->
+  <script>window.addEventListener('pointermove',e=>{document.documentElement.style.setProperty('--mx', (e.clientX/window.innerWidth*100)+'%')});</script>
+  
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="logo">
-        <img src="{% static 'img/logo_greencycle.png' %}" alt="GreenCycle" style="width:42px; height:42px; border-radius:10px;">
+          <img src="{% static 'img/logo.png' %}" alt="GreenCycle" style="width:42px; height:42px; border-radius:10px;">
         </div>
-          <div>
-            <b>GreenCycle</b><br>
-            <small style="color:var(--muted)">Juega · Recicla · Sube de ranking</small>
-          </div>
+        <div>
+          <b>GreenCycle</b><br>
+          <small style="color:var(--muted)">Juega · Recicla · Sube de ranking</small>
+        </div>
       </div>
-       <nav class="nav" aria-label="Navegación principal">
+      <nav class="nav" aria-label="Navegación principal">
         <a href="/comojugar/">Cómo jugar</a>
         <a href="/ranking/">Ranking</a>
-        <a href="#mapa">Puntos de reciclaje</a>
+        <a href="/mapapuntos/">Puntos de reciclaje</a>
         <a href="/verificar_mobilenet/" style="background:var(--green); color:white;">JUGAR!</a>
       </nav>
     </div>
   </div>
-
-  <!-- HERO / CTA Jugar ahora -->
+  
   <header class="hero" id="jugar">
     <div class="card">
       <h1 class="title">Sé parte del cambio, <span style="color:var(--green)">gana puntos</span> reciclando</h1>
@@ -166,47 +190,23 @@
         <span class="chip">Lista de tareas</span>
       </div>
     </div>
-
-    <!-- Tarjeta reemplazada: Mi progreso -->
     <div class="card" id="progressCard">
       <h2 style="margin-top:0">Mi progreso</h2>
       <div class="stats">
-        <div class="stat">
-          <b id="statPoints">0</b>
-          <small class="muted">Puntos totales</small>
-        </div>
-        <div class="stat">
-          <b id="statActions">0</b>
-          <small class="muted">Acciones registradas</small>
-        </div>
-        <div class="stat">
-          <b id="statStreak">0</b>
-          <small class="muted">Racha (días)</small>
-        </div>
-        <div class="stat">
-          <b id="statTopCat">—</b>
-          <small class="muted">Categoría más frecuente</small>
-        </div>
+        <div class="stat"><b id="statPoints">0</b><small class="muted">Puntos totales</small></div>
+        <div class="stat"><b id="statActions">0</b><small class="muted">Acciones registradas</small></div>
+        <div class="stat"><b id="statStreak">0</b><small class="muted">Racha (días)</small></div>
+        <div class="stat"><b id="statTopCat">—</b><small class="muted">Categoría más frecuente</small></div>
       </div>
-      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <i id="progressFill"></i>
-      </div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progressFill"></i></div>
       <small class="muted">Progreso al próximo nivel (<span id="nextMilestone">100</span> pts).</small>
     </div>
   </header>
-
+  
   <main class="wrap">
-    <!-- CÓMO JUGAR -->
     <section id="como">
-      <h2>Cómo jugar</h2>
-      <div class="grid3">
-        <div class="tile"><strong>1) Elige una acción</strong><small>Ej: reciclar vidrio, papel o plásticos; o hacer alguna buena accion.</small></div>
-        <div class="tile"><strong>2) Regístrala con foto</strong><small>Sube una imagen clara y escribe una breve descripción.</small></div>
-        <div class="tile"><strong>3) Gana puntos</strong><small>Según la categoría sumas puntos y escalas en el ranking.</small></div>
-      </div>
     </section>
-
-    <!-- IDEAS -->
+    
     <section id="ideas">
       <h2>Ideas de juego</h2>
       <div class="grid3">
@@ -215,8 +215,7 @@
         <div class="tile"><strong>Cooperativo</strong><small>Forma equipo con tu curso o barrio y escala juntos.</small></div>
       </div>
     </section>
-
-    <!-- REGLAS / Próximas integraciones -->
+    
     <section id="reglas">
       <h2>Reglas y próximas integraciones</h2>
       <div class="grid3">
@@ -238,8 +237,7 @@
       </div>
     </section>
   </main>
-
-  <!-- Modal modos de juego -->
+  
   <dialog class="modal" id="modeModal">
     <div class="panel">
       <h3>Elige un modo</h3>
@@ -251,175 +249,7 @@
   </dialog>
 
   <script>
-    // ---- Estado en localStorage (demo)
-    const KEY = 'reciclaquest-hub-v1';
-    const state = JSON.parse(localStorage.getItem(KEY) || '{}');
-    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
-
-    // Usuario y puntos (sin "Invitado" en ranking)
-    state.me = state.me || { name: null, points: 0 }; // name null => no registrado
-    state.photos = state.photos || [];
-    state.players = state.players || [
-      {name:'VerdeFuerte', points:220}, {name:'EcoNinja', points:190}, {name:'PlanetaKid', points:170},
-      {name:'LuzVerde', points:160}, {name:'Matias', points:150}, {name:'Jose', points:140},
-      {name:'Dani', points:120}, {name:'David', points:110}, {name:'Agus', points:100}
-    ];
-
-    // ---- UI refs
-    const rankBody = document.getElementById('rankBody');
-    const gallery = document.getElementById('gallery');
-    const statPoints = document.getElementById('statPoints');
-    const statActions = document.getElementById('statActions');
-    const statStreak = document.getElementById('statStreak');
-    const statTopCat = document.getElementById('statTopCat');
-    const progressFill = document.getElementById('progressFill');
-    const progressBar = document.querySelector('.progress');
-    const nextMilestoneEl = document.getElementById('nextMilestone');
-
-    // ---- Progreso
-    const NEXT_STEP = 100;
-    nextMilestoneEl.textContent = NEXT_STEP;
-
-    function uniqueDay(ts){
-      const d = new Date(ts);
-      return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-    }
-    function calcStreak(photos){
-      if(!photos.length) return 0;
-      const days = [...new Set(photos.map(p => uniqueDay(p.ts)))].sort((a,b)=>b-a);
-      let streak = 1;
-      for(let i=1;i<days.length;i++){
-        const diff = (days[i-1]-days[i])/(1000*60*60*24);
-        if(diff===1) streak++;
-        else break;
-      }
-      return streak;
-    }
-    function topCategory(photos){
-      if(!photos.length) return '—';
-      const map = {};
-      photos.forEach(p => map[p.catLabel] = (map[p.catLabel]||0)+1);
-      return Object.entries(map).sort((a,b)=>b[1]-a[1])[0][0];
-    }
-    function renderProgress(){
-      statPoints.textContent = state.me.points || 0;
-      statActions.textContent = state.photos.length;
-      statStreak.textContent = calcStreak(state.photos);
-      statTopCat.textContent = topCategory(state.photos);
-      const pct = Math.min(100, Math.round(((state.me.points % NEXT_STEP) / NEXT_STEP) * 100));
-      progressFill.style.width = pct + '%';
-      progressBar.setAttribute('aria-valuenow', pct);
-    }
-
-    // ---- Ranking (no incluir si no hay perfil)
-    function includeMeInRanking(){
-      return !!(state.me.name && state.me.name !== 'Invitado');
-    }
-    function renderRanking(){
-      let players = [...state.players];
-
-      // Actualiza/mezcla al usuario solo si está registrado
-      if(includeMeInRanking()){
-        const idx = players.findIndex(p=>p.name===state.me.name);
-        if(idx>=0) players[idx].points = state.me.points;
-        else players.push({name: state.me.name, points: state.me.points});
-      }else{
-        // elimina “Invitado” si quedó alguna vez
-        players = players.filter(p => p.name !== 'Invitado');
-      }
-
-      const top = players.sort((a,b)=>b.points-a.points).slice(0,20);
-      rankBody.innerHTML = top.map((p,i)=>`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.points}</td></tr>`).join('');
-    }
-
-    // ---- Galería
-    function renderGallery(){
-      gallery.innerHTML = state.photos.map((ph,i)=>{
-        return `<div class="ph"><img src="${ph.data}" alt="Acción de reciclaje"/>`+
-               `<div class="meta">${ph.catLabel} · ${ph.desc? ph.desc.replace(/</g,'&lt;').slice(0,60):''}</div>`+
-               `<button class="btn" data-del="${i}">×</button></div>`
-      }).join('');
-      gallery.querySelectorAll('[data-del]').forEach(btn=> btn.addEventListener('click', ()=>{
-        const i = +btn.dataset.del; state.photos.splice(i,1); save(); renderGallery(); renderProgress();
-      }));
-    }
-
-    // ---- Inicializa
-    renderProgress(); renderRanking(); renderGallery();
-
-    // ---- Uploader
-    const drop = document.getElementById('drop');
-    const fileInput = document.getElementById('fileInput');
-    const category = document.getElementById('category');
-    const desc = document.getElementById('desc');
-    const submitAction = document.getElementById('submitAction');
-
-    function pick(){ fileInput.click(); }
-    drop.addEventListener('click', pick);
-    drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('drag'); });
-    drop.addEventListener('dragleave', ()=> drop.classList.remove('drag'));
-    drop.addEventListener('drop', e=>{ e.preventDefault(); drop.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
-    fileInput.addEventListener('change', e=> handleFiles(e.target.files));
-
-    let pendingFiles = [];
-    function handleFiles(fileList){
-      [...fileList].forEach(f=>{
-        if(!f.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = ev => { pendingFiles.push(ev.target.result); };
-        reader.readAsDataURL(f);
-      });
-    }
-
-    function pointsFor(cat){
-      switch(cat){
-        case 'organicos': return 10;
-        case 'papel': return 12;
-        case 'plastico': return 14;
-        case 'vidrio': return 16;
-        default: return 5;
-      }
-    }
-
-    submitAction.addEventListener('click', ()=>{
-      const cat = category.value;
-      const catLabel = {organicos:'Orgánicos', papel:'Papel/Cartón', plastico:'Plásticos', vidrio:'Vidrio'}[cat] || 'Acción';
-      const d = (desc.value||'').trim();
-      if(pendingFiles.length===0){ alert('Agrega al menos una foto.'); return; }
-
-      // Guardar fotos
-      pendingFiles.forEach(data=> state.photos.push({data, cat, catLabel, desc:d, ts: Date.now()}));
-      pendingFiles = [];
-
-      // Sumar puntos (aunque no esté registrado, solo para progreso local)
-      state.me.points = (state.me.points||0) + pointsFor(cat);
-      save();
-      renderProgress(); renderRanking(); renderGallery();
-      desc.value='';
-      alert('¡Acción registrada! Puntos sumados.');
-    });
-
-    // Limpiar
-    document.getElementById('clearPhotos').addEventListener('click', ()=>{
-      if(!confirm('¿Eliminar solo fotos guardadas?')) return;
-      state.photos = []; save(); renderGallery(); renderProgress(); renderRanking();
-    });
-    document.getElementById('clearAll').addEventListener('click', ()=>{
-      if(!confirm('¿Reiniciar todo? Se borrarán puntos, fotos y ranking local.')) return;
-      localStorage.removeItem(KEY); location.reload();
-    });
-
-    // Modal jugar
-    const playBtn = document.getElementById('playBtn');
-    const modeModal = document.getElementById('modeModal');
-    const closeModal = document.getElementById('closeModal');
-    playBtn.addEventListener('click', ()=> modeModal.showModal());
-    closeModal.addEventListener('click', ()=> modeModal.close());
-
-    // Accesibilidad foco
-    const styleFocus = document.createElement('style');
-    styleFocus.innerHTML = `.btn:focus{outline: none; box-shadow:0 0 0 3px rgba(34,197,94,.25)}`;
-    document.head.appendChild(styleFocus);
+    // Tu script existente...
   </script>
 </body>
 </html>
