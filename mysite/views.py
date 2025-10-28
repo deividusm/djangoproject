@@ -12,14 +12,14 @@ def hub(request):
     return render(request, 'hub.html', {
         'usuario': request.user  # ✅ Esto te permite usar {{ usuario.username }} en el HTML
     })
-
 @login_required(login_url='account_login')
 def ranking(request):
     return render(request, 'ranking.html') 
 
 @login_required(login_url='account_login')
 def comojugar(request):
-    return render(request, 'comojugar.html') 
+    return render(request, 'comojugar.html')
+
 # Vista para mostrar el formulario de verificación de imagen
 class VerificarMobileNetView(View):
     def get(self, request):
@@ -51,7 +51,3 @@ class SubirImagenView(View):
         # Se pasa el resultado al template para mostrarlo
         return render(request, 'verificar_mobilenet.html', {'resultado': resultado})
 
-
-
-
-#cosa nueva
