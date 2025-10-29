@@ -20,6 +20,14 @@ def ranking(request):
 def comojugar(request):
     return render(request, 'comojugar.html')
 
+@login_required
+def ranking_index(request):
+    # Aquí puedes pasar datos del ranking al template si los tienes
+    context = {
+        'titulo': 'Página de Ranking'
+    }
+    return render(request, 'ranking/ranking.html', context)
+
 # Vista para mostrar el formulario de verificación de imagen
 class VerificarMobileNetView(View):
     def get(self, request):
