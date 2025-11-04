@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+import dj_database_url  # <--- AÑADE ESTO
 
 # Configuración básica
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,6 +9,8 @@ SECRET_KEY = 'django-insecure-!%-0o5quvw%-=m(^!8cnwzsrw1)sy#jom92*ato&0kv9wxnxcf
 DEBUG = True
 ALLOWED_HOSTS = []
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Aplicaciones necesarias
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,13 +61,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-# Base de datos (SQLite)
+DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
+
 
 # Validación de contraseñas
 AUTH_PASSWORD_VALIDATORS = [
