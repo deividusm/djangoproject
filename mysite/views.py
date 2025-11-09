@@ -5,20 +5,23 @@ from django.views import View
 from .image_validator import es_imagen_relevante  # Importa la función de validación de imagen
 
 # Vista para el Hub (requiere estar logueado)
-
-
 @login_required(login_url='account_login')
 def hub(request):
     return render(request, 'hub.html', {
         'usuario': request.user  # ✅ Esto te permite usar {{ usuario.username }} en el HTML
     })
+
 @login_required(login_url='account_login')
 def ranking(request):
-    return render(request, 'ranking.html') 
+    return render(request, 'ranking.html')
 
 @login_required(login_url='account_login')
 def comojugar(request):
     return render(request, 'comojugar.html')
+
+@login_required(login_url='account_login')
+def mapapuntos(request):
+    return render(request, 'mapapuntos.html')
 
 # Vista para mostrar el formulario de verificación de imagen
 class VerificarMobileNetView(View):
@@ -50,4 +53,3 @@ class SubirImagenView(View):
         
         # Se pasa el resultado al template para mostrarlo
         return render(request, 'verificar_mobilenet.html', {'resultado': resultado})
-
