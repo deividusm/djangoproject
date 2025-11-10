@@ -114,7 +114,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True        # si quieres login solo por email
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # 'username' | 'email' | 'username_email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

@@ -3,15 +3,24 @@ from keras.utils import load_img, img_to_array
 from keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
 import numpy as np
 import logging
+from PIL import Image
 import io 
+# ... tus otras importaciones (tensorflow, keras, etc.)
+# --- 1. DEFINE TUS PALABRAS CLAVE --- (Etiquetas aceptadas)
+#
+# ¡CAMBIO 1: ETIQUETAS CORREGIDAS!
+# Estas son las etiquetas reales de ImageNet (con guiones bajos)
+# que MobileNetV2 puede predecir.
+#
+PALABRAS_CLAVE_ACEPTADAS = {
+    'ashcan', 'garbage_can',        # Para basureros
+    'flowerpot', 'vase',           # Para macetas, floreros
+    'potted_plant',                # La más importante (planta en maceta)
+    'corn', 'broccoli', 'mushroom',"leaf", 'banana', # Alimentos que son plantas
+}
 
-# --- 1. IMPORTAR MODELOS DE DJANGO ---
-# ¡CAMBIO 1: Importamos tu modelo 'Categorias'!
-# La lista 'PALABRAS_CLAVE_ACEPTADAS' se elimina, ya no la necesitamos.
-from ranking.models import Categorias
 
 # --- 2. CARGA GLOBAL DEL MODELO ---
-# (Esto no cambia, está perfecto)
 try:
     print("Cargando modelo global de MobileNetV2...")
     MODELO_GLOBAL = tf.keras.applications.MobileNetV2(weights='imagenet')
@@ -21,7 +30,6 @@ except Exception as e:
     MODELO_GLOBAL = None
 
 # --- 3. FUNCIÓN DE PROCESAMIENTO ---
-# (Esto no cambia, está perfecto)
 def procesar_y_predecir(archivo_imagen):
     """
     Toma un archivo de imagen en memoria (UploadedFile de Django), 
@@ -32,15 +40,20 @@ def procesar_y_predecir(archivo_imagen):
         return None
 
     try:
-        # Re-leemos el archivo desde el principio
-        archivo_imagen.seek(0)
+    
+        # ¡CAMBIO! Envolvemos el archivo en io.BytesIO
+        # Esto lee los bytes del archivo y los presenta en un formato que load_img entiende.
         img = load_img(io.BytesIO(archivo_imagen.read()), target_size=(224, 224))
         img_array = img_to_array(img)
+# ...
         
-        img_batch = np.expand_dims(img_array, axis=0)
-        processed_img = preprocess_input(img_batch) 
+        img_batch = np.expand_dims(img_array, axis=0)  # Añadimos una dimensión extra
+        processed_img = preprocess_input(img_batch)  # Preprocesamos la imagen
 
+        # Usar el modelo global para predecir la imagen
         predictions = MODELO_GLOBAL.predict(processed_img)
+
+        # Decodificar las 10 mejores predicciones
         decoded_preds = decode_predictions(predictions, top=10)[0]
 
         print("\n--- Predicciones de la imagen: ---")
@@ -55,49 +68,33 @@ def procesar_y_predecir(archivo_imagen):
         return None
 
 # --- 4. FUNCIÓN PRINCIPAL DE VALIDACIÓN ---
-# ¡CAMBIO 2: Lógica de validación actualizada!
 def es_imagen_relevante(archivo_imagen):
     """
     Función principal que combina todo.
-    Recibe un archivo, lo predice y lo compara con la BD.
-    
-    DEVUELVE:
-    - El objeto 'Categorias' si hay coincidencia.
-    - 'None' si no hay coincidencia o hay un error.
+    Recibe un archivo, lo predice y devuelve True o False.
     """
     
-    # 1. Obtener las predicciones del modelo de IA
+    # --- ¡CAMBIO 2: REINICIAR EL ARCHIVO! ---
+    # Esto asegura que Keras lea el archivo desde el principio.
+    try:
+        archivo_imagen.seek(0)
+    except Exception as e:
+        print(f"Advertencia: No se pudo hacer seek(0) al archivo. {e}")
+    
     predicciones = procesar_y_predecir(archivo_imagen)
 
     if predicciones is None:
-        return None  # Devuelve None, no False
+        return False
 
-    print("Analizando etiquetas encontradas y comparando con la BD:")
-    
-    # 2. Extraer solo las etiquetas de texto (ej. 'potted_plant', 'ashcan')
-    etiquetas_predichas = [etiqueta for (_, etiqueta, _) in predicciones]
-    
-    # 3. Consultar la BD
-    # Buscamos en la tabla 'Categorias' si 'Nombre_categoria'
-    # coincide con ALGUNA de las etiquetas predichas.
-    try:
-        # Esta es una consulta eficiente:
-        # "SELECT * FROM Categorias WHERE Nombre_categoria IN ('potted_plant', 'ashcan', ...)"
-        categoria_encontrada = Categorias.objects.filter(
-            Nombre_categoria__in=etiquetas_predichas
-        ).first() # .first() = danos la primera que encuentres
+    print("Analizando etiquetas encontradas:")
+    for (id_imagenet, etiqueta, score) in predicciones:
 
-        # 4. Devolver el resultado
-        if categoria_encontrada:
-            # ¡ÉXITO!
-            print(f"   ¡COINCIDENCIA! '{categoria_encontrada.Nombre_categoria}' está en la BD.")
-            return categoria_encontrada # <--- Devuelve el objeto Categoria completo
-        
-        else:
-            # No se encontró ninguna
-            print("   No se encontraron etiquetas relevantes en la BD. Imagen rechazada.")
-            return None # <--- Devuelve None
-            
-    except Exception as e:
-         print(f"Error al consultar la BD en el validador: {e}")
-         return None # Si hay error de BD, rechazar
+        # La lógica de filtro: si alguna predicción está en las palabras clave aceptadas
+        if etiqueta in PALABRAS_CLAVE_ACEPTADAS:
+            print(f"   ¡COINCIDENCIA! '{etiqueta}' es aceptada.")
+            return True  # Imagen aceptada
+
+    # Si el bucle termina, no se encontró ninguna etiqueta relevante
+    print("   No se encontraron etiquetas relevantes. Imagen rechazada.")
+    
+    return False  # Imagen rechazada
