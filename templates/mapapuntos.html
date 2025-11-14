@@ -242,19 +242,19 @@
         
         <div class="filter-group">
           <label>
-            <input type="checkbox" name="filter" value="pet" checked> 
+            <input type="checkbox" name="filter" value="pet"> 
             Plástico (PET)
           </label>
           <label>
-            <input type="checkbox" name="filter" value="vidrio" checked> 
+            <input type="checkbox" name="filter" value="vidrio"> 
             Vidrio
           </label>
           <label>
-            <input type="checkbox" name="filter" value="papel" checked> 
+            <input type="checkbox" name="filter" value="papel"> 
             Papel y Cartón
           </label>
           <label>
-            <input type="checkbox" name="filter" value="latas" checked> 
+            <input type="checkbox" name="filter" value="latas"> 
             Latas
           </label>
           </div>
@@ -268,102 +268,105 @@
   <script>
     
     // --- 1. LISTA DE PUNTOS CON "TAGS" (etiquetas) ---
-    // Todos los puntos ahora tienen al menos una etiqueta de material (pet, vidrio, papel, latas).
     const puntosReciclaje = [
       
       // === PUNTOS EN VALPARAÍSO (10 puntos) ======
-      {
-        "lat": -33.0458, "lon": -71.6180,
-        "nombre": "Punto Limpio Plaza Sotomayor",
-        "acepta": "PET, Latas, Papel, Cartón",
-        "tags": ["pet", "latas", "papel"]
+      {//verdadero
+        "lat": -33.0372, "lon": -71.6510,
+        "nombre": "Punto de Reciclaje Cancha Juan Montedónicor",
+        "acepta": "Vidrio",
+        "tags": ["vidrio"]
+      },
+      {//verdadero
+        "lat": -33.0375, "lon": -71.6482,
+        "nombre": "Punto de reciclaje porvenir alto sofanor Parra",
+        "acepta": "Botellas, latas",
+        "tags": ["latas", "pet"]
+      },
+      {//verdadero
+        "lat": -33.0391, "lon": -71.6477,
+        "nombre": "Punto de reciclaje Av.Porvenir EMPART",
+        "acepta": "Vidrio",
+        "tags": ["vidrio"]
+      },
+      {//verdadero
+        "lat": -33.0426, "lon": -71.6298,
+        "nombre": "Punto de reciclaje AgroLawen",
+        "acepta": "PET, Latas, Papel, Cartón, Vidrio",
+        "tags": ["pet", "latas", "papel", "vidrio"]
+      },
+      {//verdadero
+        "lat": -33.0482, "lon": -71.6028,
+        "nombre": "Contenedor de vidrio",
+        "acepta": "Vidrio",
+        "tags": ["vidrio"]
+      },
+      {//verdadero
+        "lat": -33.0507, "lon": -71.6024,
+        "nombre": "Gestion de residuos Marcel Szanto Narea",
+        "acepta": "PET",
+        "tags": ["pet"]
+      },
+      {//verdadero
+        "lat": -33.0333, "lon": -71.5813,
+        "nombre": "Centro de reciclaje Juanka",
+        "acepta": "Papel, Cartón",
+        "tags": ["pet", "papel"]
       },
       {
-        "lat": -33.0360, "lon": -71.6288,
-        "nombre": "Recicla Valpo (Barrio Puerto)", 
+        "lat": -33.0110, "lon": -71.5410,
+        "nombre": "Tierra Orgánica", 
         "acepta": "Plástico (Todo tipo), Tetrapak, Papel",
         "tags": ["pet", "papel"]
       },
       {
-        "lat": -33.0515, "lon": -71.6502,
-        "nombre": "Contenedor Vidrio Laguna Verde",
+        "lat": -33.0154, "lon": -71.5429,
+        "nombre": "Reciclaje de Botellas",
         "acepta": "Vidrio",
-        "tags": ["vidrio"]
+        "tags": ["vidrio", "pet"]
       },
       {
-        "lat": -33.0520, "lon": -71.6145,
-        "nombre": "Punto Limpio Av. Argentina",
-        "acepta": "Papel y Cartón (Volumen grande)",
+        "lat": -33.0199, "lon": -71.5444,
+        "nombre": "Recicladora Nacional",
+        "acepta": "latas",
+        "tags": ["latas"]
+      },
+      {
+        "lat": -33.0263, "lon": -71.5539,
+        "nombre": "GeoCiclos",
+        "acepta": "Vidrio, pet, papel",
+        "tags": ["vidrio", "pet", "papel"]
+      },
+      {
+        "lat": -33.024, "lon": -71.5612,
+        "nombre": "Garate Yanez Fernando",
+        "acepta": "papel",
         "tags": ["papel"]
       },
       {
-        "lat": -33.0430, "lon": -71.6255,
-        "nombre": "Punto de Acopio Cerro Barón", 
-        "acepta": "PET, Papel, Latas, Vidrio",
-        "tags": ["pet", "papel", "latas", "vidrio"]
+        "lat": -33.0337, "lon": -71.5329,
+        "nombre": "Punto De Reciclaje",
+        "acepta": "Vidrio, pet, papel, latas",
+        "tags": ["vidrio", "pet", "papel", "latas"]
       },
       {
-        "lat": -33.0440, "lon": -71.6200,
-        "nombre": "Punto Limpio Muelle Barón",
-        "acepta": "Latas y botellas plásticas",
+        "lat": -33.0343, "lon": -71.5310,
+        "nombre": "Punto De Reciclaje Botellas",
+        "acepta": "latas y pet",
         "tags": ["latas", "pet"]
       },
       {
-        "lat": -33.0395, "lon": -71.6420,
-        "nombre": "Punto Limpio Parque Quebrada Verde",
-        "acepta": "PET, Latas",
-        "tags": ["pet", "latas"]
+        "lat": -33.0352, "lon": -71.5253,
+        "nombre": "Punto De Reciclaje",
+        "acepta": "vidrio, pet, papel",
+        "tags": ["vidrio", "pet", "papel"]
       },
       {
-        "lat": -33.0490, "lon": -71.6225,
-        "nombre": "Punto Limpio El Almendral (Bellavista)",
-        "acepta": "PET, Latas, Papel, Cartón",
-        "tags": ["pet", "latas", "papel"]
+        "lat": -33.0547, "lon": -71.6222,
+        "nombre": "Punto Limpio Plásticos Pet y Vidrios",
+        "acepta": "Vidrio y Pet",
+        "tags": ["pet", "vidrio"]
       },
-      {
-        "lat": -33.0315, "lon": -71.6350,
-        "nombre": "Punto de Acopio El Vergel", 
-        "acepta": "PET, Vidrio, Papel, Latas",
-        "tags": ["pet", "vidrio", "papel", "latas"]
-      },
-      {
-        "lat": -33.0540, "lon": -71.6320,
-        "nombre": "Punto Verde Caleta Portales",
-        "acepta": "Botellas PET",
-        "tags": ["pet"]
-      },
-      
-      // === PUNTOS EN VIÑA DEL MAR (5 puntos) ======
-      {
-        "lat": -33.0300, "lon": -71.5510,
-        "nombre": "Punto Limpio Plaza Vergara",
-        "acepta": "PET, Latas, Vidrio",
-        "tags": ["pet", "latas", "vidrio"]
-      },
-      {
-        "lat": -33.0285, "lon": -71.5390,
-        "nombre": "Punto de Acopio Gómez Carreño", 
-        "acepta": "PET, Vidrio, Papel, Latas",
-        "tags": ["pet", "vidrio", "papel", "latas"]
-      },
-      {
-        "lat": -33.0350, "lon": -71.5450,
-        "nombre": "Punto Limpio Parroquia Viña del Mar",
-        "acepta": "PET, Latas, Papel",
-        "tags": ["pet", "latas", "papel"]
-      },
-      {
-        "lat": -33.0210, "lon": -71.5450,
-        "nombre": "Contenedor Vidrio 1 Norte",
-        "acepta": "Vidrio",
-        "tags": ["vidrio"]
-      },
-      {
-        "lat": -33.0250, "lon": -71.5280,
-        "nombre": "Punto Limpio Jardín Botánico",
-        "acepta": "PET, Latas, Papel, Cartón",
-        "tags": ["pet", "latas", "papel"]
-      }
     ];
     // ----------------------------------------------------
 
@@ -389,10 +392,10 @@
       marker.myTags = punto.tags || []; 
       
       allMarkers.push(marker);
-      marker.addTo(map); // Añadir al mapa por defecto
+      // No los añadimos al mapa al inicio
     });
 
-    // 5. ¡LÓGICA DE FILTRADO!
+    // 5. ¡LÓGICA DE FILTRADO! (Modificada para no mostrar nada por defecto)
     const filterCheckboxes = document.querySelectorAll('.filter-group input[name="filter"]');
 
     filterCheckboxes.forEach(checkbox => {
@@ -407,29 +410,29 @@
 
       // 2. Recorrer todos los marcadores
       allMarkers.forEach(marker => {
-        // Si no hay ningún filtro marcado, mostrarlos todos
-        if (checkedFilters.length === 0) {
-          marker.addTo(map);
-          return; // Siguiente marcador
-        }
-
         // 3. Comprobar si las 'tags' del marcador incluyen ALGUNO de los filtros marcados
         const hasMatch = marker.myTags.some(tag => checkedFilters.includes(tag));
 
-        if (hasMatch) {
-          marker.addTo(map); // Si coincide, mostrarlo
-        } else {
-          marker.removeFrom(map); // Si no coincide, ocultarlo
+        // 4. LÓGICA:
+        // Si hay filtros marcados Y el marcador coincide, MOSTRAR
+        if (checkedFilters.length > 0 && hasMatch) {
+          marker.addTo(map);
+        } 
+        // Si no hay filtros marcados O el marcador no coincide, OCULTAR
+        else {
+          marker.removeFrom(map); 
         }
       });
     }
 
-    // 6. Geolocalización del usuario (sin cambios)
+    // 6. Geolocalización del usuario (MODIFICADA SIN MARCADOR VERDE)
     navigator.geolocation.getCurrentPosition(
       function(position) {
         const userCoords = [position.coords.latitude, position.coords.longitude];
+        // Solo centramos el mapa en la ubicación del usuario
         map.setView(userCoords, 15); 
         
+        /* --- MARCADOR VERDE ELIMINADO ---
         L.marker(userCoords, {
           icon: L.icon({ 
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -441,6 +444,7 @@
           })
         }).addTo(map)
           .bindPopup('<b>¡Estás aquí!</b>');
+        */
       },
       function() {
         console.log("El usuario no dio permiso de geolocalización.");
