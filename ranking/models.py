@@ -1,44 +1,51 @@
+# ranking/models.py
+
 from django.db import models
-from django.conf import settings # Para conectar al usuario de Django
+from django.conf import settings
 
-# 1. El modelo para la tabla "Categorias"
-class Categorias(models.Model):
-    # OJO: Django crea un 'id' (PK) automáticamente. 
-    # Para que coincida con tu SQL, definimos que el 'id' es 'bigint'
-    id = models.BigAutoField(primary_key=True)
-    Nombre_categoria = models.TextField(blank=True, null=True)
-    Puntos_Asignados = models.BigIntegerField(default=0)
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    total_points = models.BigIntegerField(default=0)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username} ({self.total_points} pts)"
+
+
+class Task(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
+    complete = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    points = models.IntegerField(default=10)
 
     class Meta:
-        # Le dice a Django el nombre exacto de la tabla en Supabase
-        db_table = 'Categorias' 
+        ordering = ['complete', '-created']
 
-# 2. El modelo para la tabla "ranking"
-class Ranking(models.Model):
-    # Usamos el 'user_id' (uuid) como la Llave Primaria
-    user_id = models.UUIDField(primary_key=True) 
-    puntos_totales = models.BigIntegerField(default=0)
+    def __str__(self):
+        return self.title
 
-    class Meta:
-        db_table = 'ranking'
 
-# 3. El modelo para la tabla "imagenes usuario"
 class ImagenesUsuario(models.Model):
-    id = models.AutoField(primary_key=True) #AutoField para int4
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='imagenes_subidas'
+    )
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        related_name='imagenes'
+    )
+    imagen = models.ImageField(upload_to='evidencias/')
+    puntos_otorgados = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    url_imagen = models.TextField(blank=True, null=True)
-    
-    # Conexión (Llave Foránea) al usuario de auth
-    user_id = models.UUIDField() 
-    
-    # Conexión (Llave Foránea) a la tabla Categorias
-    categoria_id = models.BigIntegerField()
 
-    class Meta:
-        db_table = 'imagenes usuario'
-        # Nota: Los nombres de tus columnas "user-id" y "categoria_id" 
-        # deben coincidir aquí. Si usaste guion bajo, cámbialos.
-        # ej: user_id = models.UUIDField(db_column='user-id')
-
-
-# Create your models here.
+    def __str__(self):
+        return f"{self.user.username} - {self.task.title} ({self.puntos_otorgados} pts)"

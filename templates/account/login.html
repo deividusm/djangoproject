@@ -29,7 +29,7 @@
     <div class="subtle">o continúa con:</div>
 
     <!-- Google con POST para saltar la pantalla intermedia -->
-    <form method="post" action="{% provider_login_url 'google' process='login' next='/hub/' %}">
+    <form method="post" action="{% provider_login_url 'google' process='login' next='/' %}">
       {% csrf_token %}
       <button type="submit" class="btn">Google</button>
     </form>
