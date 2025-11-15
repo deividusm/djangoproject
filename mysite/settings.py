@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',  # Para habilitar Google Sign-In
+    'allauth.socialaccount.providers.google'
+    "ranking",  # Para habilitar Google Sign-In
 ]
 
 # Configuración de middleware sirve para autentificacion y desautorizar funciones dentro del programa

@@ -1,44 +1,34 @@
+# Pega esto en tu models.py (y borra todo lo demás)
+
 from django.db import models
-from django.conf import settings # Para conectar al usuario de Django
+from django.conf import settings # La forma correcta de referirse al usuario de Django
 
-# 1. El modelo para la tabla "Categorias"
-class Categorias(models.Model):
-    # OJO: Django crea un 'id' (PK) automáticamente. 
-    # Para que coincida con tu SQL, definimos que el 'id' es 'bigint'
-    id = models.BigAutoField(primary_key=True)
-    Nombre_categoria = models.TextField(blank=True, null=True)
-    Puntos_Asignados = models.BigIntegerField(default=0)
-
-    class Meta:
-        # Le dice a Django el nombre exacto de la tabla en Supabase
-        db_table = 'Categorias' 
-
-# 2. El modelo para la tabla "ranking"
-class Ranking(models.Model):
-    # Usamos el 'user_id' (uuid) como la Llave Primaria
-    user_id = models.UUIDField(primary_key=True) 
-    puntos_totales = models.BigIntegerField(default=0)
-
-    class Meta:
-        db_table = 'ranking'
-
-# 3. El modelo para la tabla "imagenes usuario"
-class ImagenesUsuario(models.Model):
-    id = models.AutoField(primary_key=True) #AutoField para int4
-    created_at = models.DateTimeField(auto_now_add=True)
-    url_imagen = models.TextField(blank=True, null=True)
+class Profile(models.Model):
+    # Conectamos 1-a-1 con el usuario de Django (el de allauth)
+    # Si borras un usuario, se borra su perfil.
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     
-    # Conexión (Llave Foránea) al usuario de auth
-    user_id = models.UUIDField() 
+    # El puntaje total
+    total_points = models.BigIntegerField(default=0)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}: {self.total_points} puntos"
+
+class Task(models.Model):
+    # Conectamos la tarea a un usuario
+    # Si borras un usuario, se borran sus tareas.
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
+    complete = models.BooleanField(default=False) # ¿Está completada?
+    created = models.DateTimeField(auto_now_add=True) # Fecha de creación
     
-    # Conexión (Llave Foránea) a la tabla Categorias
-    categoria_id = models.BigIntegerField()
+    # ¡Importante! Los puntos que da esta tarea específica
+    points = models.IntegerField(default=10) 
+
+    def __str__(self):
+        return self.title
 
     class Meta:
-        db_table = 'imagenes usuario'
-        # Nota: Los nombres de tus columnas "user-id" y "categoria_id" 
-        # deben coincidir aquí. Si usaste guion bajo, cámbialos.
-        # ej: user_id = models.UUIDField(db_column='user-id')
-
-
-# Create your models here.
+        ordering = ['complete'] # Las tareas incompletas aparecen primero
